@@ -1,15 +1,12 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using FIAP.CloudGames.API.Configurations;
+using FIAP.CloudGames.API.Middlewares;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Aqui registrar os serviços (ex: DbContext, Repositories, etc)
-// builder.Services.AddDbContext<SeuDbContext>(...);
-// builder.Services.AddScoped<ISeuServico, SeuServico>();
+builder.AddApiConfiguration()                   // Api Configurations
+       .AddDatabaseConfiguration()              // Setting DBContexts
+       .AddSwaggerConfiguration()               // Swagger Config
+       .AddDependencyInjectionConfiguration();  // DI
 
 var app = builder.Build();
 
@@ -20,13 +17,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Middleware de tratamento global de erros (pode implementar depois)
-// app.UseMiddleware<SeuMiddlewareDeErro>();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.MapGet("/health", () => Results.Ok("API funcionando!"));
+
+app.UseSwaggerSetup();
 
 app.Run();
