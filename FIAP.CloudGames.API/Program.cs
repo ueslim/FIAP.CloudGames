@@ -27,4 +27,7 @@ app.MapGet("/health", () => Results.Ok("API funcionando!"));
 
 app.UseSwaggerSetup();
 
+// Applying migrations and seeding some data
+app.UseDbSeed();
+
 app.Run();
