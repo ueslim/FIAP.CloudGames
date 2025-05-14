@@ -14,5 +14,14 @@ namespace FIAP.CloudGames.API.Configurations
 
             return builder;
         }
+
+        public static WebApplication UseDbSeed(this WebApplication app)
+        {
+            ArgumentNullException.ThrowIfNull(app);
+
+            DbMigrationHelpers.EnsureSeedData(app).Wait();
+
+            return app;
+        }
     }
 }
