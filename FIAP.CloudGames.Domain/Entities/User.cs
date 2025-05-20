@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FIAP.CloudGames.Domain.Entities
+﻿namespace FIAP.CloudGames.Domain.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = "";
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
-        public string Role { get; set; } = "User";
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string PasswordHash { get; set; }
+        public UserRole Role { get; set; }
+        public DateTime? LastLogin { get; set; }
+        public bool IsActive { get; set; }
+        public virtual ICollection<UserGame> UserGames { get; set; } = [];
+    }
+
+    public enum UserRole
+    {
+        User = 0,
+        Administrator = 1
     }
 }

@@ -5,7 +5,6 @@ namespace FIAP.CloudGames.Tests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }
