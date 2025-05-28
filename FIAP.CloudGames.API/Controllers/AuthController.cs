@@ -26,7 +26,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var response = await _userService.LoginAsync(loginDto);
                 return Ok(response);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -41,7 +41,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var user = await _userService.CreateUserAsync(createUserDto);
                 return CreatedAtAction(nameof(Register), user);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }

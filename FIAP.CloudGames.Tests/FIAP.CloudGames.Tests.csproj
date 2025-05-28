@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="FluentAssertions" Version="8.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.5.3" />
@@ -19,8 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FIAP.CloudGames.API\FIAP.CloudGames.API.csproj" />
     <ProjectReference Include="..\FIAP.CloudGames.Application\FIAP.CloudGames.Application.csproj" />
     <ProjectReference Include="..\FIAP.CloudGames.Domain\FIAP.CloudGames.Domain.csproj" />
+    <ProjectReference Include="..\FIAP.CloudGames.Infra\FIAP.CloudGames.Infra.csproj" />
   </ItemGroup>
 
   <ItemGroup>
