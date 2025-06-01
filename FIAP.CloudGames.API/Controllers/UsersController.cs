@@ -31,7 +31,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var user = await _userService.GetUserByIdAsync(userId);
                 return Ok(user);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -52,7 +52,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var user = await _userService.GetUserByIdAsync(id);
                 return Ok(user);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -67,7 +67,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var games = await _gameService.GetUserLibraryAsync(userId);
                 return Ok(games);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -82,7 +82,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var games = await _gameService.GetUserLibraryWithDapperAsync(userId);
                 return Ok(games);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -114,7 +114,7 @@ namespace FIAP.CloudGames.API.Controllers
                 }
                 return NotFound();
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }

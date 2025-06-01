@@ -41,7 +41,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var game = await _gameService.GetGameByIdAsync(id);
                 return Ok(game);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -56,7 +56,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var game = await _gameService.CreateGameAsync(createGameDto);
                 return CreatedAtAction(nameof(GetById), new { id = game.Id }, game);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -71,7 +71,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var game = await _gameService.UpdateGameAsync(id, updateGameDto);
                 return Ok(game);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -90,7 +90,7 @@ namespace FIAP.CloudGames.API.Controllers
                 }
                 return NotFound();
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -117,7 +117,7 @@ namespace FIAP.CloudGames.API.Controllers
                 var game = await _gameService.PurchaseGameAsync(userId, purchaseDto);
                 return Ok(game);
             }
-            catch (ValidationException ex)
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
