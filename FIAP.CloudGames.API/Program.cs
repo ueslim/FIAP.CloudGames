@@ -23,7 +23,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGet("/health", () => Results.Ok("API funcionando!"));
+//app.MapGet("/health", () => Results.Ok("API funcionando!"));
 
 app.UseSwaggerSetup();
 

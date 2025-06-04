@@ -20,16 +20,12 @@ namespace FIAP.CloudGames.Infra.Repository
         {
             var query = _dbSet.Where(g => g.IsActive);
 
+
             if (!string.IsNullOrWhiteSpace(term))
             {
                 query = query.Where(g =>
                     g.Title.Contains(term) ||
                     g.Description.Contains(term));
-            }
-
-            if (tags != null && tags.Length > 0)
-            {
-                query = query.Where(g => g.Tags.Any(t => tags.Contains(t)));
             }
 
             if (minPrice.HasValue)
@@ -42,7 +38,18 @@ namespace FIAP.CloudGames.Infra.Repository
                 query = query.Where(g => g.Price <= maxPrice.Value);
             }
 
-            return await query.ToListAsync();
+            // Executa a parte que o EF consegue converter em SQL
+            var result = await query.ToListAsync();
+
+            // Agora filtra por Tags em memória
+            if (tags != null && tags.Length > 0)
+            {
+                result = result
+                    .Where(g => g.Tags.Any(t => tags.Contains(t)))
+                    .ToList();
+            }
+
+            return result;
         }
     }
 }
