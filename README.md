@@ -312,7 +312,7 @@ Para a entrega final, por favor, inclua um relatório conforme as instruções d
 - Nome do Grupo: Grupo 83  
 - Link da Documentação DDD: [https://miro.com/app/board/uXjVIyOtuxQ=/](https://miro.com/app/board/uXjVIyOtuxQ=/)  
 - Link do Repositório: [https://github.com/ueslim/FIAP.CloudGames](https://github.com/ueslim/FIAP.CloudGames)  
-- Link do Vídeo: [Link do vídeo salvo no Youtube ou lugar de sua preferência] (Será atualizado após a gravação)
+- Link do Vídeo: [https://youtu.be/sIG9bVz7vcc](https://youtu.be/sIG9bVz7vcc)
 
 ---
 
