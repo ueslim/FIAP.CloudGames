@@ -261,14 +261,37 @@ A estrutura do projeto (`FIAP.CloudGames.API`) é organizada para seguir princí
 O projeto inclui um conjunto de testes unitários para as funcionalidades críticas, garantindo a validação das regras de negócio e o comportamento esperado da API:
 
 - **Autenticação (`AuthTest.cs`):**  
-  - Testes para login (sucesso, falha por credenciais inválidas).  
-  - Testes para registro de usuário (sucesso, e-mail duplicado, validações de nome, e-mail e senha - formato, complexidade).
+   - Teste para verificar autenticação bem-sucedida com credenciais válidas.
+   - Teste para verificar falha na autenticação quando o e-mail ou a senha são inexistentes.
+   - Teste para verificar criação de usuário com dados válidos.
+   - Teste para verificar exibição de mensagem ao tentar criar usuário com e-mail já existente.
+   - Teste para validar que o nome do usuário possui no mínimo 3 caracteres e não é nulo.
+   - Teste para validar que o nome do usuário não excede 100 caracteres.
+   - Teste para validar que o e-mail fornecido está em um formato válido.
+   - Teste para validar que a senha possui no mínimo 8 caracteres, incluindo letras, números e caracteres especiais.
 
 - **Usuário (`UserTest.cs`):**  
-  - Testes para consulta de usuários (todos, por ID - sucesso e não encontrado).  
-  - Testes para atualização de usuário (sucesso, usuário não encontrado, e-mail já existente).  
-  - Testes para exclusão de usuário (sucesso, usuário não encontrado).  
-  - Testes para listagem de jogos da biblioteca do usuário.
+   - Teste para verificar a consulta de todos os usuários cadastrados.
+   - Teste para verificar a consulta de um único usuário existente.
+   - Teste para verificar o retorno apropriado ao consultar um usuário inexistente.
+   - Teste para verificar a consulta da biblioteca de jogos associada ao usuário.
+   - Teste para validar atualização de usuário existente ou inativo.
+   - Teste para verificar falha na atualização quando o novo e-mail informado já está em uso.
+   - Teste para verificar atualização de usuário com sucesso.
+   - Teste para verificar remoção de usuário com sucesso.
+   - Teste para verificar falha na remoção de usuário em caso de erro.
+
+- **Jogos (`GameTest.cs`):**
+   - Teste para verificar a consulta de um game específico existente.
+   - Teste para verificar a consulta de todos os games disponíveis.
+   - Teste para verificar o retorno apropriado ao consultar um game inexistente.
+   - Teste para verificar atualização de game com sucesso por um administrador.
+   - Teste para verificar falha na tentativa de atualização de game por um usuário não autorizado.
+   - Teste para verificar remoção de game com sucesso por um administrador.
+   - Teste para verificar falha na tentativa de remoção de game por um usuário não autorizado.
+   - Teste para verificar criação de game com sucesso por um administrador.
+   - Teste para verificar falha na tentativa de criação de game por um usuário não autorizado.
+   - Teste para validar falha na criação de game com campos inválidos.
 
 ---
 
@@ -289,7 +312,7 @@ Para a entrega final, por favor, inclua um relatório conforme as instruções d
 - Nome do Grupo: Grupo 83  
 - Link da Documentação DDD: [https://miro.com/app/board/uXjVIyOtuxQ=/](https://miro.com/app/board/uXjVIyOtuxQ=/)  
 - Link do Repositório: [https://github.com/ueslim/FIAP.CloudGames](https://github.com/ueslim/FIAP.CloudGames)  
-- Link do Vídeo: [Link do vídeo salvo no Youtube ou lugar de sua preferência] (Será atualizado após a gravação)
+- Link do Vídeo: [https://youtu.be/sIG9bVz7vcc](https://youtu.be/sIG9bVz7vcc)
 
 ---
 
