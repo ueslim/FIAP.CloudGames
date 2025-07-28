@@ -3,15 +3,15 @@ name: CI/CD do FIAP.CloudGames.Api para Azure
 on:
   push:
     branches:
-      - main # O workflow será acionado quando houver um push para a branch 'main'. Altere para sua branch principal se for diferente (ex: master, develop).
+      - main # O workflow será acionado quando houver um push para a branch 'main'.
 
 env:
-  AZURE_WEBAPP_NAME: fiapcloudgames-api-g93 # Seu nome do App Service (o que você criou no portal)
-  AZURE_RESOURCE_GROUP: rg-fiapcloudgames # Seu Grupo de Recursos
-  ACR_NAME: g93fiapcloudgames # Seu nome do Azure Container Registry
-  IMAGE_NAME: fiapcloudgames_fiap-cloudgames-api # Seu nome da imagem Docker (sem o registro)
-  IMAGE_TAG: latest # Tag da imagem Docker (mantenha como latest para este desafio)
-  DOTNET_VERSION: '8.x' # Versão do .NET SDK. Mantenha '8.x' se você usa .NET 8.
+  AZURE_WEBAPP_NAME: fiapcloudgames-api-g93
+  AZURE_RESOURCE_GROUP: rg-fiapcloudgames
+  ACR_NAME: g93fiapcloudgames
+  IMAGE_NAME: fiapcloudgames_fiap-cloudgames-api
+  IMAGE_TAG: latest
+  DOTNET_VERSION: '8.x'
 
 jobs:
   build-and-deploy:
@@ -46,8 +46,7 @@ jobs:
       run: az acr login --name ${{ env.ACR_NAME }}
 
     - name: Build da imagem Docker
-      # O Dockerfile está na raiz do repositório, então não precisamos de working-directory aqui.
-      # Certifique-se de que seu Dockerfile referencia corretamente a pasta da API (ex: COPY FIAP.CloudGames.Api/ .).
+      # O Dockerfile está na raiz do repositório.
       run: docker build . -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
     - name: Push da imagem Docker para o ACR
@@ -57,5 +56,5 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        slot-name: 'production' # <-- ESSA LINHA É CRÍTICA E FALTAVA!
-        images: '${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}' #
+        slot-name: 'production'
+        images: '${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}'
