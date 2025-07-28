@@ -3,7 +3,7 @@ name: CI/CD do FIAP.CloudGames.Api para Azure
 on:
   push:
     branches:
-      - main # O workflow será acionado quando houver um push para a branch 'main'.
+      - main #  O workflow será acionado quando houver um push para a branch 'main'.
 
 env:
   AZURE_WEBAPP_NAME: fiapcloudgames-api-g93
