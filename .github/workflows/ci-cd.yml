@@ -54,7 +54,6 @@ jobs:
       run: docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
     - name: Deploy da imagem para o Azure App Service
-      # ESTA PARTE ESTAVA INCOMPLETA. AGORA ESTÁ COMPLETA:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
