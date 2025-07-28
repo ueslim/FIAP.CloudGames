@@ -1,0 +1,113 @@
+# Arquivos e diretórios do Git
+.git
+.gitignore
+.gitattributes
+
+# Arquivos do Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Arquivos de build e binários
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+**/x64/
+**/x86/
+**/build/
+**/bld/
+**/out/
+
+# Arquivos de teste
+**/TestResults/
+**/Tests/
+**/*.Tests/
+**/*.Test/
+
+# Arquivos de configuração local
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/appsettings.*.json
+!**/appsettings.json
+
+# Arquivos de log
+**/*.log
+**/logs/
+
+# Arquivos temporários
+**/tmp/
+**/temp/
+**/*.tmp
+**/*.temp
+
+# Arquivos de cache
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.cache
+
+# Arquivos de documentação
+**/docs/
+**/documentation/
+**/README.md
+**/*.md
+
+# Arquivos de migração do Entity Framework (opcional - remova se precisar)
+**/Migrations/
+
+# Arquivos de configuração do Docker
+Dockerfile*
+.dockerignore
+docker-compose*.yml
+
+# Arquivos de CI/CD
+.github/
+.gitlab-ci.yml
+azure-pipelines.yml
+Jenkinsfile
+
+# Arquivos de backup
+**/*.bak
+**/*.backup
+
+# Arquivos de configuração de IDE
+**/.editorconfig
+**/.stylecop
+**/StyleCopReport.xml
+
+# Arquivos de cobertura de código
+**/coverage/
+**/*.coverage
+**/*.coveragexml
+
+# Arquivos de análise estática
+**/CodeAnalysisLog.xml
+**/FxCopReport.xml
+
+# Arquivos específicos do projeto
+**/launchSettings.json
+**/Properties/launchSettings.json
+
+# Arquivos de NuGet
+**/packages/
+**/*.nupkg
+**/*.snupkg
+
+# Arquivos de publicação
+**/publish/
+**/wwwroot/
+
+# Arquivos de configuração de banco
+**/*.mdf
+**/*.ldf
+**/*.ndf
+
+# Arquivos de certificados
+**/*.pfx
+**/*.p12
+**/*.key
+**/*.crt 
