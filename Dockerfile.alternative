@@ -18,13 +18,19 @@ COPY ["FIAP.CloudGames.Domain/FIAP.CloudGames.Domain.csproj", "FIAP.CloudGames.D
 COPY ["FIAP.CloudGames.Infra/FIAP.CloudGames.Infra.csproj", "FIAP.CloudGames.Infra/"]
 COPY ["FIAP.CloudGames.sln", "./"]
 
-# Restaurar dependências
-RUN dotnet restore "FIAP.CloudGames.API/FIAP.CloudGames.API.csproj"
+# Restaurar dependências com mais detalhes
+RUN dotnet restore "FIAP.CloudGames.API/FIAP.CloudGames.API.csproj" --verbosity normal
 
 # Copiar todo o código fonte
 COPY . .
 
-# Publicar a aplicação em modo Release
+# Build da aplicação primeiro
+RUN dotnet build "FIAP.CloudGames.API/FIAP.CloudGames.API.csproj" \
+    -c Release \
+    --no-restore \
+    --verbosity normal
+
+# Publicar a aplicação em modo Release (versão simplificada)
 RUN dotnet publish "FIAP.CloudGames.API/FIAP.CloudGames.API.csproj" \
     -c Release \
     -o /app/publish \

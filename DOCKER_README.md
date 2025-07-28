@@ -6,12 +6,11 @@ Este documento contém instruções para executar a aplicação FIAP Cloud Games
 
 ```
 FIAP.CloudGames/
-├── src/                           # Pasta principal dos projetos
-│   ├── FIAP.CloudGames.API/       # 🚀 Camada de Apresentação
-│   ├── FIAP.CloudGames.Application/ # ⚙️ Camada de Aplicação  
-│   ├── FIAP.CloudGames.Domain/    # 🏛️ Camada de Domínio
-│   ├── FIAP.CloudGames.Infra/     # 🗄️ Camada de Infraestrutura
-│   └── FIAP.CloudGames.Tests/     # 🧪 Testes Unitários
+├── FIAP.CloudGames.API/           # 🚀 Camada de Apresentação
+├── FIAP.CloudGames.Application/   # ⚙️ Camada de Aplicação  
+├── FIAP.CloudGames.Domain/        # 🏛️ Camada de Domínio
+├── FIAP.CloudGames.Infra/         # 🗄️ Camada de Infraestrutura
+├── FIAP.CloudGames.Tests/         # 🧪 Testes Unitários
 ├── Dockerfile                     # 🐳 Dockerfile multi-stage
 ├── .dockerignore                  # 📝 Arquivos ignorados no build
 └── docker-compose.yml             # 🐙 Orquestração de containers
