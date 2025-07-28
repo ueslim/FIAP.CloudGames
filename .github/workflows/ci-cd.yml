@@ -1,0 +1,60 @@
+name: CI/CD do FIAP.CloudGames.Api para Azure
+
+on:
+  push:
+    branches:
+      - main # O workflow será acionado quando houver um push para a branch 'main'.
+
+env:
+  AZURE_WEBAPP_NAME: fiapcloudgames-api-g93
+  AZURE_RESOURCE_GROUP: rg-fiapcloudgames
+  ACR_NAME: g93fiapcloudgames
+  IMAGE_NAME: fiapcloudgames_fiap-cloudgames-api
+  IMAGE_TAG: latest
+  DOTNET_VERSION: '8.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Configurar .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restaurar dependências
+      run: dotnet restore
+
+    - name: Build da API .NET
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Publicar API .NET
+      run: dotnet publish --configuration Release --no-build --output ${{ env.DOTNET_VERSION }}-release
+
+    - name: Login no Azure (via Service Principal)
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Login no Azure Container Registry (ACR)
+      run: az acr login --name ${{ env.ACR_NAME }}
+
+    - name: Build da imagem Docker
+      # O Dockerfile está na raiz do repositório.
+      run: docker build . -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+    - name: Push da imagem Docker para o ACR
+      run: docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+    - name: Deploy da imagem para o Azure App Service
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        slot-name: 'production'
+        images: '${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}'
