@@ -3,7 +3,7 @@ name: CI/CD do FIAP.CloudGames.Api para Azure
 on:
   push:
     branches:
-      - master
+      - master # O workflow será acionado quando houver um push para a branch 'master'.
 
 env:
   AZURE_WEBAPP_NAME: fiapcloudgames-api-g93
@@ -33,20 +33,18 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Publicar API .NET
-      run: dotnet publish --configuration Release --no-build --output ./publish
+      run: dotnet publish --configuration Release --no-build --output ${{ env.DOTNET_VERSION }}-release
 
-    - name: Login no Azure (via Service Principal)
+    - name: Login no Azure
       uses: azure/login@v2
       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }} # Autenticação via JSON completo do Service Principal
 
     - name: Login no Azure Container Registry (ACR)
       run: az acr login --name ${{ env.ACR_NAME }}
 
     - name: Build da imagem Docker
+      # O Dockerfile está na raiz do repositório.
       run: docker build . -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
     - name: Push da imagem Docker para o ACR
