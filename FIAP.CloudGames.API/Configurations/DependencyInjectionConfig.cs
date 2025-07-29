@@ -6,6 +6,7 @@ using FIAP.CloudGames.Domain.Interfaces;
 using FIAP.CloudGames.Infra.Repository;
 using FIAP.CloudGames.Infra.Repository.Dapper;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FIAP.CloudGames.API.Configurations
 {
@@ -14,6 +15,9 @@ namespace FIAP.CloudGames.API.Configurations
         public static WebApplicationBuilder AddDependencyInjectionConfiguration(this WebApplicationBuilder builder)
         {
             ArgumentNullException.ThrowIfNull(builder);
+
+            // Add Application Insights Telemetry
+            builder.Services.AddApplicationInsightsTelemetry();
 
             //Services
 
