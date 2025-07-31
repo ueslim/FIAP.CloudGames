@@ -2,8 +2,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Definir variáveis de ambiente para otimização
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 \
-    DOTNET_RUNNING_IN_CONTAINER=true \
+# Removido DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 daqui
+ENV DOTNET_RUNNING_IN_CONTAINER=true \
     DOTNET_USE_POLLING_FILE_WATCHER=true \
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true \
     NUGET_XMLDOC_MODE=skip
@@ -43,7 +43,7 @@ RUN apk add --no-cache \
 # Definir variáveis de ambiente para produção
 ENV ASPNETCORE_ENVIRONMENT=Production \
     ASPNETCORE_URLS=http://+:80 \
-    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 \
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     DOTNET_RUNNING_IN_CONTAINER=true \
     DOTNET_EnableDiagnostics=0
 
@@ -67,4 +67,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
 
 # Comando para executar a aplicação
-ENTRYPOINT ["dotnet", "FIAP.CloudGames.API.dll"] 
+ENTRYPOINT ["dotnet", "FIAP.CloudGames.API.dll"]
