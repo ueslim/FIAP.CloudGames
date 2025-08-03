@@ -8,6 +8,18 @@ builder.AddApiConfiguration()                   // Api Configurations
        .AddSwaggerConfiguration()               // Swagger Config
        .AddDependencyInjectionConfiguration();  // DI
 
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevelopmentPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -16,9 +28,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("DevelopmentPolicy");
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
