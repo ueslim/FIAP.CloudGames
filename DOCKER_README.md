@@ -43,7 +43,6 @@ docker run -d -p 8080:80 --name fiap-cloudgames-api fiap-cloudgames-api
 
 - **API**: http://localhost:8080
 - **Swagger**: http://localhost:8080/swagger
-- **Health Check**: http://localhost:8080/health
 
 ## 🔧 Configurações
 
@@ -107,25 +106,6 @@ docker-compose exec fiap-cloudgames-api dotnet ef database update
 - **Stage 1 (build)**: Compilação e publicação da aplicação
 - **Stage 2 (runtime)**: Imagem final otimizada com Alpine Linux
 
-### **Segurança Implementada**
-- ✅ Usuário não-root (appuser:appgroup)
-- ✅ Imagem base Alpine Linux (menor footprint)
-- ✅ Health checks configurados
-- ✅ Variáveis de ambiente para produção
-
-### **Otimizações de Performance**
-- ✅ Cache de layers do Docker otimizado
-- ✅ Build em modo Release
-- ✅ PublishTrimmed=true (remove código não utilizado)
-- ✅ PublishReadyToRun=true (compilação AOT)
-- ✅ Exclusão de arquivos desnecessários via .dockerignore
-
-## 🧪 Health Checks
-
-Os health checks verificam se os serviços estão funcionando:
-- **API**: `http://localhost:8080/health`
-- **SQL Server**: Query `SELECT 1`
-
 ## 🔍 Troubleshooting
 
 ### **Problemas Comuns**
@@ -174,11 +154,3 @@ A imagem final otimizada tem aproximadamente:
 - **~150-200MB** (com Alpine Linux)
 - **~50-70% menor** que uma imagem padrão
 - **Inicialização rápida** com ReadyToRun
-
-## 🎯 Próximos Passos
-
-1. Configure as variáveis de ambiente para produção
-2. Implemente CI/CD pipeline
-3. Configure monitoramento e logs
-4. Implemente backup automático do banco
-5. Configure SSL/TLS para HTTPS 
