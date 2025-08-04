@@ -1,4 +1,4 @@
-# FIAP Cloud Games API - Fase 1
+# FIAP Cloud Games API
 
 ## Visão Geral do Projeto
 
