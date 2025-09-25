@@ -1,5 +1,5 @@
 ﻿using FIAP.CloudGames.Identity.API.Data;
-using FIAP.CloudGames.WebAPI.Core.Identity;
+using FIAP.CloudGames.Identity.API.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,16 +9,20 @@ namespace FIAP.CloudGames.Identity.API.Configuration
     {
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(opt =>
-                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                sql => sql.MigrationsHistoryTable("__EFMigrationsHistory_Identity", "dbo")));
+            var appSettingsSection = configuration.GetSection("AppTokenSettings");
+            services.Configure<AppTokenSettings>(appSettingsSection);
+
+            services.AddJwksManager()
+                .PersistKeysToDatabaseStore<ApplicationDbContext>();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
+                .AddErrorDescriber<IdentityPortugueseMessages>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
-            services.AddJwtConfiguration(configuration);
 
             return services;
         }

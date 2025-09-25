@@ -27,6 +27,7 @@ namespace FIAP.CloudGames.Identity.API.Configuration
             {
                 endpoints.MapControllers();
             });
+
             app.UseJwksDiscovery();
 
             return app;

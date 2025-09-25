@@ -2,21 +2,19 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using NetDevPack.Security.JwtExtensions;
 
 namespace FIAP.CloudGames.WebAPI.Core.Identity
 {
     public static class JwtConfig
     {
         public static void AddJwtConfiguration(this IServiceCollection services,
-            IConfiguration configuration)
+                   IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
             var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddAuthentication(x =>
             {
@@ -24,17 +22,10 @@ namespace FIAP.CloudGames.WebAPI.Core.Identity
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = true;
+                x.RequireHttpsMetadata = false;
+                x.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } };
                 x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = appSettings.ValidOn,
-                    ValidIssuer = appSettings.Issuer
-                };
+                x.SetJwksOptions(new JwkOptions(appSettings.AuthenticationJwksUrl));
             });
         }
 

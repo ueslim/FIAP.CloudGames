@@ -71,6 +71,26 @@ namespace FIAP.CloudGames.Identity.API.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SecurityKeys",
+                schema: "identity",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    KeyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Use = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Parameters = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsRevoked = table.Column<bool>(type: "bit", nullable: false),
+                    RevokedReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiredAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SecurityKeys", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 schema: "identity",
                 columns: table => new
@@ -265,6 +285,10 @@ namespace FIAP.CloudGames.Identity.API.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens",
+                schema: "identity");
+
+            migrationBuilder.DropTable(
+                name: "SecurityKeys",
                 schema: "identity");
 
             migrationBuilder.DropTable(
