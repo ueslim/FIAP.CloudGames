@@ -10,7 +10,8 @@ namespace FIAP.CloudGames.Identity.API.Configuration
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
-                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                sql => sql.MigrationsHistoryTable("__EFMigrationsHistory_Identity", "dbo")));
 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()

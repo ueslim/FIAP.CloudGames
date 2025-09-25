@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-// Adicione o namespace aqui
 namespace FIAP.CloudGames.Infra
 {
     public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>

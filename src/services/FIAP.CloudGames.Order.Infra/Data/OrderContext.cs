@@ -11,7 +11,7 @@ namespace FIAP.CloudGames.Order.Infra.Data
     {
         private readonly IMediatorHandler _mediatorHandler;
 
-        public OrderContext(DbContextOptions<OrderContext> options, IMediatorHandler mediatorHandler)
+        public OrderContext(DbContextOptions<OrderContext> options, IMediatorHandler? mediatorHandler)
             : base(options)
         {
             _mediatorHandler = mediatorHandler;
@@ -23,6 +23,7 @@ namespace FIAP.CloudGames.Order.Infra.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("order");
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                 e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(100)");
@@ -35,7 +36,9 @@ namespace FIAP.CloudGames.Order.Infra.Data
             foreach (var relationship in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
-            modelBuilder.HasSequence<int>("MySequence").StartsAt(1000).IncrementsBy(1);
+            modelBuilder.HasSequence<int>("MySequence", "order")
+                .StartsAt(1000)
+                .IncrementsBy(1);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -57,7 +60,7 @@ namespace FIAP.CloudGames.Order.Infra.Data
             }
 
             var sucesso = await base.SaveChangesAsync() > 0;
-            if (sucesso) await _mediatorHandler.PublishEvents(this);
+            if (sucesso && _mediatorHandler != null) await _mediatorHandler.PublishEvents(this);
 
             return sucesso;
         }

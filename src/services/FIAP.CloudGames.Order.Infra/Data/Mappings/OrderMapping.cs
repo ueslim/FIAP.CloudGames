@@ -34,7 +34,7 @@ namespace FIAP.CloudGames.Order.Infra.Data.Mappings
             });
 
             builder.Property(c => c.Code)
-                .HasDefaultValueSql("NEXT VALUE FOR MySequence");
+                .HasDefaultValueSql("NEXT VALUE FOR [order].[MySequence]");
 
             // 1 : N => Pedido : PedidoItems
             builder.HasMany(c => c.OrderItems)

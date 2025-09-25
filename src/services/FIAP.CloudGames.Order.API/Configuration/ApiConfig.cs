@@ -9,7 +9,8 @@ namespace FIAP.CloudGames.Order.API.Configuration
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<OrderContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                sql => sql.MigrationsHistoryTable("__EFMigrationsHistory_Order", "dbo")));
 
             services.AddControllers();
 

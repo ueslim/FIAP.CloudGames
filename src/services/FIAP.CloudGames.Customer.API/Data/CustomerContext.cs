@@ -12,7 +12,7 @@ namespace FIAP.CloudGames.Customer.API.Data
     {
         private readonly IMediatorHandler _mediatorHandler;
 
-        public CustomerContext(DbContextOptions<CustomerContext> options, IMediatorHandler mediatorHandler)
+        public CustomerContext(DbContextOptions<CustomerContext> options, IMediatorHandler? mediatorHandler)
             : base(options)
         {
             _mediatorHandler = mediatorHandler;
@@ -25,6 +25,7 @@ namespace FIAP.CloudGames.Customer.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("customer");
             modelBuilder.Ignore<ValidationResult>();
             modelBuilder.Ignore<Event>();
 
@@ -41,7 +42,7 @@ namespace FIAP.CloudGames.Customer.API.Data
         public async Task<bool> Commit()
         {
             var sucesso = await base.SaveChangesAsync() > 0;
-            if (sucesso) await _mediatorHandler.PublishEvents(this);
+            if (sucesso && _mediatorHandler != null) await _mediatorHandler.PublishEvents(this);
 
             return sucesso;
         }

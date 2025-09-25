@@ -15,6 +15,7 @@ namespace FIAP.CloudGames.Catalog.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("catalog");
             modelBuilder.Ignore<ValidationResult>();
             modelBuilder.Ignore<Event>();
 

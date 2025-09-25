@@ -20,6 +20,7 @@ namespace FIAP.CloudGames.Payment.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("payment");
             modelBuilder.Ignore<ValidationResult>();
             modelBuilder.Ignore<Event>();
 
