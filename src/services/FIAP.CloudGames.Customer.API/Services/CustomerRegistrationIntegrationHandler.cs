@@ -6,12 +6,12 @@ using FluentValidation.Results;
 
 namespace FIAP.CloudGames.Customer.API.Services
 {
-    public class RegistroClienteIntegrationHandler : BackgroundService
+    public class CustomerRegistrationIntegrationHandler : BackgroundService
     {
         private readonly IMessageBus _bus;
         private readonly IServiceProvider _serviceProvider;
 
-        public RegistroClienteIntegrationHandler(
+        public CustomerRegistrationIntegrationHandler(
                             IServiceProvider serviceProvider,
                             IMessageBus bus)
         {

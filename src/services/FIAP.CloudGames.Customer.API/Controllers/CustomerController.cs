@@ -3,10 +3,12 @@ using FIAP.CloudGames.Customer.API.Application.Commands;
 using FIAP.CloudGames.Customer.API.Models;
 using FIAP.CloudGames.WebAPI.Core.Controllers;
 using FIAP.CloudGames.WebAPI.Core.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP.CloudGames.Customer.API.Controllers
 {
+    [Authorize]
     public class CustomerController : MainController
     {
         private readonly ICustomerRepository _customerRepository;

@@ -135,9 +135,7 @@ namespace FIAP.CloudGames.Identity.API.Services
             var token = await _context.RefreshTokens.AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Token == refreshToken);
 
-            return token != null && token.ExpirationDate.ToLocalTime() > DateTime.Now
-                ? token
-                : null;
+            return token != null && token.ExpirationDate.ToLocalTime() > DateTime.Now ? token : null;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace FIAP.CloudGames.Customer.API.Configuration
             IConfiguration configuration)
         {
             services.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"))
-                .AddHostedService<RegistroClienteIntegrationHandler>();
+                .AddHostedService<CustomerRegistrationIntegrationHandler>();
         }
     }
 }

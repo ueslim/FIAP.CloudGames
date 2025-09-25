@@ -2,11 +2,13 @@
 using FIAP.CloudGames.Cart.API.Model;
 using FIAP.CloudGames.WebAPI.Core.Controllers;
 using FIAP.CloudGames.WebAPI.Core.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FIAP.CloudGames.Cart.API.Controllers
 {
+    [Authorize]
     public class CartController : MainController
     {
         private readonly IAspNetUser _user;
