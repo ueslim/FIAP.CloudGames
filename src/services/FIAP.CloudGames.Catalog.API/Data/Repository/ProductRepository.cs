@@ -17,12 +17,12 @@ namespace FIAP.CloudGames.Catalog.API.Data.Repository
 
         public async Task<IEnumerable<Product>> GetAll()
         {
-            return await _context.Product.AsNoTracking().ToListAsync();
+            return await _context.Products.AsNoTracking().ToListAsync();
         }
 
         public async Task<Product> GetById(Guid id)
         {
-            return await _context.Product.FindAsync(id);
+            return await _context.Products.FindAsync(id);
         }
 
         public async Task<List<Product>> GetProductsById(string ids)
@@ -34,18 +34,18 @@ namespace FIAP.CloudGames.Catalog.API.Data.Repository
 
             var idsValue = idsGuid.Select(id => id.Value);
 
-            return await _context.Product.AsNoTracking()
+            return await _context.Products.AsNoTracking()
                 .Where(p => idsValue.Contains(p.Id) && p.Active).ToListAsync();
         }
 
         public void Add(Product product)
         {
-            _context.Product.Add(product);
+            _context.Products.Add(product);
         }
 
         public void Update(Product product)
         {
-            _context.Product.Update(product);
+            _context.Products.Update(product);
         }
 
         public void Dispose()

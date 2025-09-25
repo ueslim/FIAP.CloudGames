@@ -79,7 +79,7 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("CartItem", "cart");
+                    b.ToTable("CartItems", "cart");
                 });
 
             modelBuilder.Entity("FIAP.CloudGames.Cart.API.Model.CartCustomer", b =>

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIAP.CloudGames.Cart.API.Data.Migrations
 {
     [DbContext(typeof(CartContext))]
-    [Migration("20250925110619_Init_Cart")]
+    [Migration("20250925230640_Init_Cart")]
     partial class Init_Cart
     {
         /// <inheritdoc />
@@ -82,7 +82,7 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("CartItem", "cart");
+                    b.ToTable("CartItems", "cart");
                 });
 
             modelBuilder.Entity("FIAP.CloudGames.Cart.API.Model.CartCustomer", b =>

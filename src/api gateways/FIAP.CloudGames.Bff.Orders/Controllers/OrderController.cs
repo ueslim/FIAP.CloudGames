@@ -29,7 +29,7 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
 
         [HttpPost]
         [Route("shopping/order")]
-        public async Task<IActionResult> AdicionarPedido(OrderDTO order)
+        public async Task<IActionResult> AddOrder(OrderDTO order)
         {
             var cart = await _cartService.GetCart();
             var products = await _catalogService.GetItems(cart.Items.Select(p => p.ProductId));
@@ -59,9 +59,9 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
         [HttpGet("shopping/order/list-customer")]
         public async Task<IActionResult> ListByCustomer()
         {
-            var pedidos = await _orderService.GetListByCustomerId();
+            var orders = await _orderService.GetListByCustomerId();
 
-            return pedidos == null ? NotFound() : CustomResponse(pedidos);
+            return orders == null ? NotFound() : CustomResponse(orders);
         }
 
         private async Task<bool> ValidateCartProducts(CartDTO cart, IEnumerable<ItemProductDTO> products)

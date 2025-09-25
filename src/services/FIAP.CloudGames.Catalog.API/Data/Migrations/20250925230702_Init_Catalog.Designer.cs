@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIAP.CloudGames.Catalog.API.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20250925110148_Init_Catalog")]
+    [Migration("20250925230702_Init_Catalog")]
     partial class Init_Catalog
     {
         /// <inheritdoc />

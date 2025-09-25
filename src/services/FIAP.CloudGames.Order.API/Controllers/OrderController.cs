@@ -23,7 +23,7 @@ namespace FIAP.CloudGames.Order.API.Controllers
         }
 
         [HttpPost("order")]
-        public async Task<IActionResult> AdicionarPedido(AddOrderCommand order)
+        public async Task<IActionResult> AddOrder(AddOrderCommand order)
         {
             order.CustomerId = _user.GetUserId();
             return CustomResponse(await _mediator.SendCommand(order));

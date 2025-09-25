@@ -31,7 +31,7 @@ namespace FIAP.CloudGames.Customer.API.Controllers
         }
 
         [HttpPost("customer/address")]
-        public async Task<IActionResult> AdicionarEndereco(AddAddressCommand address)
+        public async Task<IActionResult> AddAddress(AddAddressCommand address)
         {
             address.CustomerId = _user.GetUserId();
             return CustomResponse(await _mediator.SendCommand(address));

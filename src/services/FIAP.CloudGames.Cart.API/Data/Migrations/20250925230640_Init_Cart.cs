@@ -35,7 +35,7 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CartItem",
+                name: "CartItems",
                 schema: "cart",
                 columns: table => new
                 {
@@ -49,9 +49,9 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartItem", x => x.Id);
+                    table.PrimaryKey("PK_CartItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CartItem_CartCustomer_CartId",
+                        name: "FK_CartItems_CartCustomer_CartId",
                         column: x => x.CartId,
                         principalSchema: "cart",
                         principalTable: "CartCustomer",
@@ -66,9 +66,9 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItem_CartId",
+                name: "IX_CartItems_CartId",
                 schema: "cart",
-                table: "CartItem",
+                table: "CartItems",
                 column: "CartId");
         }
 
@@ -76,7 +76,7 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CartItem",
+                name: "CartItems",
                 schema: "cart");
 
             migrationBuilder.DropTable(

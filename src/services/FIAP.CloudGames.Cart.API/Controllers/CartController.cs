@@ -68,7 +68,7 @@ namespace FIAP.CloudGames.Cart.API.Controllers
             ValidateCart(cart);
             if (!ValidOperation()) return CustomResponse();
 
-            _context.CartItem.Update(cartItem);
+            _context.CartItems.Update(cartItem);
             _context.CartCustomer.Update(cart);
 
             await PersistData();
@@ -88,7 +88,7 @@ namespace FIAP.CloudGames.Cart.API.Controllers
 
             cart.RemoveItem(cartItem);
 
-            _context.CartItem.Remove(cartItem);
+            _context.CartItems.Remove(cartItem);
             _context.CartCustomer.Update(cart);
 
             await PersistData();
@@ -120,11 +120,11 @@ namespace FIAP.CloudGames.Cart.API.Controllers
 
             if (existingProductItem)
             {
-                _context.CartItem.Update(cart.GetProductById(item.ProductId));
+                _context.CartItems.Update(cart.GetProductById(item.ProductId));
             }
             else
             {
-                _context.CartItem.Add(item);
+                _context.CartItems.Add(item);
             }
 
             _context.CartCustomer.Update(cart);
@@ -144,8 +144,7 @@ namespace FIAP.CloudGames.Cart.API.Controllers
                 return null;
             }
 
-            var cartItem = await _context.CartItem
-                .FirstOrDefaultAsync(i => i.CartId == cart.Id && i.ProductId == productId);
+            var cartItem = await _context.CartItems.FirstOrDefaultAsync(i => i.CartId == cart.Id && i.ProductId == productId);
 
             if (cartItem == null || !cart.CartExistingItem(cartItem))
             {

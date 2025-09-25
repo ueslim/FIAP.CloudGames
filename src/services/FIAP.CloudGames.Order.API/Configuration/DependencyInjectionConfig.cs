@@ -20,6 +20,8 @@ namespace FIAP.CloudGames.Order.API.Configuration
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspNetUser, AspNetUser>();
 
+            services.AddScoped<IMediatorHandler, MediatorHandler>();
+
             // Commands
             services.AddScoped<IRequestHandler<AddOrderCommand, ValidationResult>, OrderCommandHandler>();
 
@@ -34,7 +36,7 @@ namespace FIAP.CloudGames.Order.API.Configuration
             // Data
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IVoucherRepository, VoucherRepository>();
-            services.AddScoped<OrderContext>();
+            //services.AddScoped<OrderContext>();
         }
     }
 }

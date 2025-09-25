@@ -13,7 +13,7 @@ namespace FIAP.CloudGames.Cart.API.Data
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        public DbSet<CartItem> CartItem { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
         public DbSet<CartCustomer> CartCustomer { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -11,7 +11,7 @@ namespace FIAP.CloudGames.Catalog.API.Data
         public CatalogContext(DbContextOptions<CatalogContext> options)
             : base(options) { }
 
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

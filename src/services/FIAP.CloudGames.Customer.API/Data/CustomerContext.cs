@@ -41,10 +41,10 @@ namespace FIAP.CloudGames.Customer.API.Data
 
         public async Task<bool> Commit()
         {
-            var sucesso = await base.SaveChangesAsync() > 0;
-            if (sucesso && _mediatorHandler != null) await _mediatorHandler.PublishEvents(this);
+            var success = await base.SaveChangesAsync() > 0;
+            if (success && _mediatorHandler != null) await _mediatorHandler.PublishEvents(this);
 
-            return sucesso;
+            return success;
         }
     }
 

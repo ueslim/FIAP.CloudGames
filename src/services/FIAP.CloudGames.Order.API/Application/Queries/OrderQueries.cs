@@ -24,21 +24,60 @@ namespace FIAP.CloudGames.Order.API.Application.Queries
 
         public async Task<OrderDTO> GetLastOrder(Guid customerId)
         {
-            const string sql = @"SELECT
-                                P.ID AS 'ProdutoId', P.CODIGO, P.VOUCHERUTILIZADO, P.DESCONTO, P.VALORTOTAL,P.PEDIDOSTATUS,
-                                P.LOGRADOURO,P.NUMERO, P.BAIRRO, P.CEP, P.COMPLEMENTO, P.CIDADE, P.ESTADO,
-                                PIT.ID AS 'ProdutoItemId',PIT.PRODUTONOME, PIT.QUANTIDADE, PIT.PRODUTOIMAGEM, PIT.VALORUNITARIO
-                                FROM PEDIDOS P
-                                INNER JOIN PEDIDOITEMS PIT ON P.ID = PIT.PEDIDOID
-                                WHERE P.CLIENTEID = @clienteId
-                                AND P.DATACADASTRO between DATEADD(minute, -3,  GETDATE()) and DATEADD(minute, 0,  GETDATE())
-                                AND P.PEDIDOSTATUS = 1
-                                ORDER BY P.DATACADASTRO DESC";
+            const string sql = @"
+                                SELECT
+                                    -- Order
+                                    O.Id,
+                                    O.Code,
+                                    O.VoucherUsed,
+                                    O.Discount,
+                                    O.TotalValue,
+                                    O.OrderStatus,
+                                    O.RegisterDate   AS [Date],
 
-            var pedido = await _orderRepository.GetConnection()
-                .QueryAsync<dynamic>(sql, new { customerId });
+                                    -- Address
+                                    O.Street,
+                                    O.Number,
+                                    O.Neighborhood,
+                                    O.PostalCode,
+                                    O.AdditionalInfo,
+                                    O.City,
+                                    O.State,
 
-            return MapOrder(pedido);
+                                    -- Items
+                                    I.Id             AS OrderItemId,
+                                    I.ProductId,
+                                    I.ProductName,
+                                    I.Quantity,
+                                    I.ProductImage,
+                                    I.UnitValue
+                                FROM [order].[Orders] O
+                                INNER JOIN [order].[OrderItems] I ON O.Id = I.OrderId
+                                WHERE O.CustomerId = @customerId
+                                  AND O.RegisterDate BETWEEN DATEADD(minute, -3, SYSDATETIME()) AND SYSDATETIME()
+                                  AND O.OrderStatus = 1
+                                ORDER BY O.RegisterDate DESC;";
+
+            var lookup = new Dictionary<Guid, OrderDTO>();
+
+            await _orderRepository.GetConnection()
+                .QueryAsync<OrderDTO, OrderItemDTO, OrderDTO>(
+                    sql,
+                    (o, item) =>
+                    {
+                        if (!lookup.TryGetValue(o.Id, out var dto))
+                        {
+                            dto = o;
+                            dto.OrdetItems ??= new List<OrderItemDTO>();
+                            lookup[o.Id] = dto;
+                        }
+
+                        dto.OrdetItems.Add(item);
+                        return dto;
+                    },
+                    splitOn: "OrderItemId");
+
+            return lookup.Values.FirstOrDefault();
         }
 
         public async Task<IEnumerable<OrderDTO>> GetListByCustomerId(Guid clienteId)
@@ -50,31 +89,48 @@ namespace FIAP.CloudGames.Order.API.Application.Queries
 
         public async Task<OrderDTO> GetAuthorizedOrders()
         {
-            // Correção para pegar todos os itens do pedido e ordernar pelo pedido mais antigo
-            const string sql = @"SELECT
-                                P.ID as 'PedidoId', P.ID, P.CLIENTEID,
-                                PI.ID as 'PedidoItemId', PI.ID, PI.PRODUTOID, PI.QUANTIDADE
-                                FROM PEDIDOS P
-                                INNER JOIN PEDIDOITEMS PI ON P.ID = PI.PEDIDOID
-                                WHERE P.PEDIDOSTATUS = 1
-                                ORDER BY P.DATACADASTRO";
+            const string sql = @"
+                                SELECT
+                                    O.Id,
+                                    O.CustomerId,
+                                    O.Code,
+                                    O.RegisterDate   AS [Date],
+                                    O.OrderStatus,
+                                    O.TotalValue,
+                                    O.Discount,
+                                    O.VoucherUsed,
 
-            // Utilizacao do lookup para manter o estado a cada ciclo de registro retornado
+                                    I.Id             AS OrderItemId,
+                                    I.ProductId,
+                                    I.ProductName,
+                                    I.Quantity,
+                                    I.UnitValue      AS Value,
+                                    I.ProductImage   AS Image
+                                FROM [order].[Orders] O
+                                INNER JOIN [order].[OrderItems] I ON O.Id = I.OrderId
+                                WHERE O.OrderStatus = 1
+                                ORDER BY O.RegisterDate;";
+
             var lookup = new Dictionary<Guid, OrderDTO>();
 
-            await _orderRepository.GetConnection().QueryAsync<OrderDTO, OrderItemDTO, OrderDTO>(sql,
-                (p, pi) =>
-                {
-                    if (!lookup.TryGetValue(p.Id, out var pedidoDTO))
-                        lookup.Add(p.Id, pedidoDTO = p);
+            await _orderRepository.GetConnection()
+                .QueryAsync<OrderDTO, OrderItemDTO, OrderDTO>(
+                    sql,
+                    (o, item) =>
+                    {
+                        if (!lookup.TryGetValue(o.Id, out var dto))
+                        {
+                            dto = o;
+                            dto.OrdetItems ??= new List<OrderItemDTO>();
+                            lookup[o.Id] = dto;
+                        }
 
-                    pedidoDTO.OrdetItems ??= new List<OrderItemDTO>();
-                    pedidoDTO.OrdetItems.Add(pi);
+                        dto.OrdetItems.Add(item);
+                        return dto;
+                    },
+                    splitOn: "OrderItemId");
 
-                    return pedidoDTO;
-                }, splitOn: "PedidoId,PedidoItemId");
-
-            // Obtendo dados o lookup
+            // oldest authorized order
             return lookup.Values.OrderBy(p => p.Date).FirstOrDefault();
         }
 

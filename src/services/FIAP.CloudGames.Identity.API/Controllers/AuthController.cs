@@ -38,12 +38,12 @@ namespace FIAP.CloudGames.Identity.API.Controllers
 
             if (result.Succeeded)
             {
-                var clientResult = await RegisterCustomer(userRegistration);
+                var customerResult = await RegisterCustomer(userRegistration);
 
-                if (!clientResult.ValidationResult.IsValid)
+                if (!customerResult.ValidationResult.IsValid)
                 {
                     await _authenticationService.UserManager.DeleteAsync(user);
-                    return CustomResponse(clientResult.ValidationResult);
+                    return CustomResponse(customerResult.ValidationResult);
                 }
 
                 return CustomResponse(await _authenticationService.GerarJwt(userRegistration.Email));

@@ -1,15 +1,14 @@
 using FIAP.CloudGames.Catalog.API.Configuration;
+using FIAP.CloudGames.Catalog.API.Data;
 using FIAP.CloudGames.WebAPI.Core.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Optional: explicitly add User Secrets in Dev (CreateBuilder already loads appsettings, env vars, etc.)
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Program>();
 }
 
-// === Services (migrated from Startup.ConfigureServices) ===
 builder.Services.AddApiConfiguration(builder.Configuration);
 
 builder.Services.AddMessageBusConfiguration(builder.Configuration);
@@ -22,7 +21,15 @@ builder.Services.RegisterServices();
 
 var app = builder.Build();
 
-// === Middleware (migrated from Startup.Configure) ===
+//SEED 
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
+    await CatalogContextSeed.EnsureSeedProducts(context);
+}
+
+
 app.UseSwaggerConfiguration();
 
 app.UseApiConfiguration(app.Environment);

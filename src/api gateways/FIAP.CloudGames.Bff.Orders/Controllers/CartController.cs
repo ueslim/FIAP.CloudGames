@@ -32,7 +32,7 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
 
         [HttpGet]
         [Route("shopping/cart-quantity")]
-        public async Task<int> ObterQuantidadeCarrinho()
+        public async Task<int> GetCartQuantity()
         {
             var quantity = await _cartService.GetCart();
             return quantity?.Items.Sum(i => i.Quantity) ?? 0;
@@ -58,7 +58,7 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
 
         [HttpPut]
         [Route("shopping/cart/items/{productId}")]
-        public async Task<IActionResult> AtualizarItemCarrinho(Guid productId, ItemCartDTO itemCart)
+        public async Task<IActionResult> UpdateCartItem(Guid productId, ItemCartDTO itemCart)
         {
             var product = await _catalogService.GetById(productId);
 
@@ -72,7 +72,7 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
 
         [HttpDelete]
         [Route("shopping/cart/items/{productId}")]
-        public async Task<IActionResult> RemoverItemCarrinho(Guid productId)
+        public async Task<IActionResult> RemoveCartItem(Guid productId)
         {
             var product = await _catalogService.GetById(productId);
 
@@ -89,7 +89,7 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
 
         [HttpPost]
         [Route("compras/carrinho/aplicar-voucher")]
-        public async Task<IActionResult> AplicarVoucher([FromBody] string voucherCode)
+        public async Task<IActionResult> ApplyVoucher([FromBody] string voucherCode)
         {
             var voucher = await _orderService.GetVoucherByCode(voucherCode);
 
@@ -110,9 +110,9 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
             if (quantity < 1) AddErrorMessage($"Escolha ao menos uma unidade do produto {product.Name}");
 
             var cart = await _cartService.GetCart();
-            var itemCarrinho = cart.Items.FirstOrDefault(p => p.ProductId == product.Id);
+            var cartItem = cart.Items.FirstOrDefault(p => p.ProductId == product.Id);
 
-            if (itemCarrinho != null && addProduct && itemCarrinho.Quantity + quantity > product.StockQuantity)
+            if (cartItem != null && addProduct && cartItem.Quantity + quantity > product.StockQuantity)
             {
                 AddErrorMessage($"O produto {product.Name} possui {product.StockQuantity} unidades em estoque, você selecionou {quantity}");
                 return;
