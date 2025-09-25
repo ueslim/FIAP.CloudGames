@@ -4,15 +4,9 @@ using FIAP.CloudGames.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.ComponentModel.DataAnnotations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace FIAP.CloudGames.Tests.Entities
 {

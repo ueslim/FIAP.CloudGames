@@ -1,6 +1,5 @@
 ﻿using FIAP.CloudGames.Application.DTOs;
 using FIAP.CloudGames.Application.Interfaces;
-using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

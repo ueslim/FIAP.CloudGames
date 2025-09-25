@@ -25,7 +25,7 @@ namespace FIAP.CloudGames.Application.Services
         public async Task<GameDto> GetGameByIdAsync(Guid id)
         {
             var game = await _gameRepository.GetByIdAsync(id);
-           
+
             if (game == null || !game.IsActive)
                 throw new ValidationException("Game not found");
 
@@ -119,7 +119,7 @@ namespace FIAP.CloudGames.Application.Services
         public async Task<GameDto> UpdateGameAsync(Guid id, UpdateGameDto updateGameDto)
         {
             var game = await _gameRepository.GetByIdAsync(id);
-          
+
             if (game == null || !game.IsActive)
                 throw new ValidationException("Game not found");
 
@@ -177,12 +177,12 @@ namespace FIAP.CloudGames.Application.Services
         public async Task<GameDto> PurchaseGameAsync(Guid userId, PurchaseGameDto purchaseDto)
         {
             var game = await _gameRepository.GetByIdAsync(purchaseDto.GameId);
-            
+
             if (game == null || !game.IsActive)
                 throw new ValidationException("Game not found");
 
             var alreadyOwned = await _userGameRepository.ExistsAsync(userId, purchaseDto.GameId);
-            
+
             if (alreadyOwned)
                 throw new ValidationException("User already owns this game");
 

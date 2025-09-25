@@ -1,12 +1,11 @@
+using FIAP.CloudGames.API.Controllers;
 using FIAP.CloudGames.Application.DTOs;
 using FIAP.CloudGames.Application.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using FIAP.CloudGames.API.Controllers;
-using Xunit;
-using Moq;
 using FIAP.CloudGames.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace FIAP.CloudGames.Tests.Entities
 {

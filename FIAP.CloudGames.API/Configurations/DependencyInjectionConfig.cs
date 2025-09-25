@@ -6,7 +6,6 @@ using FIAP.CloudGames.Domain.Interfaces;
 using FIAP.CloudGames.Infra.Repository;
 using FIAP.CloudGames.Infra.Repository.Dapper;
 using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FIAP.CloudGames.API.Configurations
 {

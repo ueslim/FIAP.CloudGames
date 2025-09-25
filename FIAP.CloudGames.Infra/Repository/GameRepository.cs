@@ -20,7 +20,6 @@ namespace FIAP.CloudGames.Infra.Repository
         {
             var query = _dbSet.Where(g => g.IsActive);
 
-
             if (!string.IsNullOrWhiteSpace(term))
             {
                 query = query.Where(g =>

@@ -1,9 +1,6 @@
-﻿using FIAP.CloudGames.Infra;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.IO;
 
 // Adicione o namespace aqui
 namespace FIAP.CloudGames.Infra
