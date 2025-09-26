@@ -14,7 +14,7 @@ namespace FIAP.CloudGames.Customer.API.Application.Commands
         {
             AggregateId = id;
             Id = id;
-            name = name;
+            Name = name;
             Email = email;
             Cpf = cpf;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 namespace FIAP.CloudGames.Bff.Orders.Configuration
 {
@@ -8,37 +9,34 @@ namespace FIAP.CloudGames.Bff.Orders.Configuration
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo()
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "FIAP Cloud Games BFF API",
                     Description = "This API is part of the FIAP Cloud Games Application.",
-                    Contact = new OpenApiContact() { Name = "FIAP GAMES", Email = "example@gmail.com" },
-                    License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
+                    Contact = new OpenApiContact { Name = "FIAP GAMES", Email = "example@gmail.com" },
+                    License = new OpenApiLicense { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
                 });
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                var securityScheme = new OpenApiSecurityScheme
                 {
-                    Description = "Insira o token JWT desta maneira: Bearer {seu token}",
                     Name = "Authorization",
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
+                    Description = "Cole apenas o token JWT. O prefixo 'Bearer ' será adicionado automaticamente.",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey
-                });
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = JwtBearerDefaults.AuthenticationScheme
+                    }
+                };
+
+                c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] {}
-                    }
+                    { securityScheme, Array.Empty<string>() }
                 });
             });
         }
