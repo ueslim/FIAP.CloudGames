@@ -1,7 +1,12 @@
 using FIAP.CloudGames.Bff.Orders.Configuration;
 using FIAP.CloudGames.WebAPI.Core.Identity;
 
+LoggingConfig.ConfigureBootstrapLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Serilog + OTLP para logs
+builder.ConfigureSerilogWithOpenTelemetry("shopping-bff-api");
 
 if (builder.Environment.IsDevelopment())
 {
@@ -18,10 +23,16 @@ builder.Services.AddSwaggerConfiguration();
 
 builder.Services.RegisterServices();
 
+// OpenTelemetry Tracing + Metrics
+builder.Services.AddObservabilityConfiguration(builder.Configuration);
+
 var app = builder.Build();
 
 app.UseSwaggerConfiguration();
 
 app.UseApiConfiguration(app.Environment);
+
+// Logs enriquecidos com user_id
+app.UseRequestLogEnrichment();
 
 app.Run();

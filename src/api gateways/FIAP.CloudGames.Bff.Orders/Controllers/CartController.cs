@@ -3,6 +3,7 @@ using FIAP.CloudGames.Bff.Orders.Services;
 using FIAP.CloudGames.WebAPI.Core.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace FIAP.CloudGames.Bff.Orders.Controllers
 {
@@ -27,6 +28,7 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
         [Route("shopping/cart")]
         public async Task<IActionResult> Index()
         {
+            Log.Information("Getting cart");
             return CustomResponse(await _cartService.GetCart());
         }
 
@@ -43,6 +45,9 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
         public async Task<IActionResult> AddCartItem(ItemCartDTO itemCart)
         {
             var product = await _catalogService.GetById(itemCart.ProductId);
+
+            Log.Information("Adding item to cart: {@Item}", product.Name);
+
 
             await ValidateItemCart(product, itemCart.Quantity, true);
             if (!ValidOperation()) return CustomResponse();
