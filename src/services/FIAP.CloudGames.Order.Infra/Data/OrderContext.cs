@@ -1,5 +1,6 @@
 ﻿using FIAP.CloudGames.Core.Data;
 using FIAP.CloudGames.Core.DomainObjects;
+using FIAP.CloudGames.Core.Events;
 using FIAP.CloudGames.Core.Mediator;
 using FIAP.CloudGames.Core.Messages;
 using FluentValidation.Results;
@@ -30,8 +31,12 @@ namespace FIAP.CloudGames.Order.Infra.Data
 
             modelBuilder.Ignore<Event>();
             modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<StoredEvent>();
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderContext).Assembly, t => t.Namespace != null
+            && t.Namespace.StartsWith("FIAP.CloudGames.Order.Infra.Data.Mappings")
+            && !t.Namespace.Contains("EventSourcing")
+   );
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
@@ -59,10 +64,10 @@ namespace FIAP.CloudGames.Order.Infra.Data
                 }
             }
 
-            var sucesso = await base.SaveChangesAsync() > 0;
-            if (sucesso && _mediatorHandler != null) await _mediatorHandler.PublishEvents(this);
+            var success = await base.SaveChangesAsync() > 0;
+            if (success && _mediatorHandler != null) await _mediatorHandler.PublishEvents(this);
 
-            return sucesso;
+            return success;
         }
     }
 

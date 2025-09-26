@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -37,9 +38,9 @@ namespace FIAP.CloudGames.Customer.API.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Street = table.Column<string>(type: "varchar(200)", nullable: false),
                     Number = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Complement = table.Column<string>(type: "varchar(250)", nullable: false),
+                    AdditionalInfo = table.Column<string>(type: "varchar(250)", nullable: false),
                     Neighborhood = table.Column<string>(type: "varchar(100)", nullable: false),
-                    ZipCode = table.Column<string>(type: "varchar(20)", nullable: false),
+                    PostalCode = table.Column<string>(type: "varchar(20)", nullable: false),
                     City = table.Column<string>(type: "varchar(100)", nullable: false),
                     State = table.Column<string>(type: "varchar(50)", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)

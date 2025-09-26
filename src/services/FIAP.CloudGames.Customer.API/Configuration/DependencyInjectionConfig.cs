@@ -1,4 +1,5 @@
-﻿using FIAP.CloudGames.Core.Mediator;
+﻿using FIAP.CloudGames.Core.Events;
+using FIAP.CloudGames.Core.Mediator;
 using FIAP.CloudGames.Customer.API.Application.Commands;
 using FIAP.CloudGames.Customer.API.Application.Events;
 using FIAP.CloudGames.Customer.API.Data;
@@ -26,6 +27,7 @@ namespace FIAP.CloudGames.Customer.API.Configuration
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<CustomerContext>();
+            services.AddSingleton<IEventStore, NoOpEventStore>();
         }
     }
 }

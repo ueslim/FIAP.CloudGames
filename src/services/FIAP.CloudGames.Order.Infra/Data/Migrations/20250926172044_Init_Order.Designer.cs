@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIAP.CloudGames.Order.Infra.Data.Migrations
 {
     [DbContext(typeof(OrderContext))]
-    [Migration("20250925111409_Init_Order")]
+    [Migration("20250926172044_Init_Order")]
     partial class Init_Order
     {
         /// <inheritdoc />

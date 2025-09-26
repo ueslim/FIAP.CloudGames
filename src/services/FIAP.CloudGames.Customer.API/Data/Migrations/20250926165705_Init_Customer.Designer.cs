@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIAP.CloudGames.Customer.API.Data.Migrations
 {
     [DbContext(typeof(CustomerContext))]
-    [Migration("20250925110606_Init_Customer")]
+    [Migration("20250926165705_Init_Customer")]
     partial class Init_Customer
     {
         /// <inheritdoc />
@@ -32,13 +32,13 @@ namespace FIAP.CloudGames.Customer.API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AdditionalInfo")
+                        .IsRequired()
+                        .HasColumnType("varchar(250)");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Complement")
-                        .IsRequired()
-                        .HasColumnType("varchar(250)");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
@@ -51,6 +51,10 @@ namespace FIAP.CloudGames.Customer.API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)");
 
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("varchar(50)");
@@ -58,10 +62,6 @@ namespace FIAP.CloudGames.Customer.API.Data.Migrations
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
