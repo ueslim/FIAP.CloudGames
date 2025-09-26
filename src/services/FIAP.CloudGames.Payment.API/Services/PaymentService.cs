@@ -25,19 +25,18 @@ namespace FIAP.CloudGames.Payment.API.Services
 
             if (transaction.Status != TransactionStatus.Authorized)
             {
-                validationResult.Errors.Add(new ValidationFailure("Pagamento",
-                        "Pagamento recusado, entre em contato com a sua operadora de cartão"));
+                validationResult.Errors.Add(new ValidationFailure("Pagamento", "Pagamento recusado, entre em contato com a sua operadora de cartão"));
 
                 return new ResponseMessage(validationResult);
             }
 
             payment.AddTransaction(transaction);
+
             _paymentRepository.AddPayment(payment);
 
             if (!await _paymentRepository.UnitOfWork.Commit())
             {
-                validationResult.Errors.Add(new ValidationFailure("Pagamento",
-                    "Houve um erro ao realizar o pagamento."));
+                validationResult.Errors.Add(new ValidationFailure("Pagamento", "Houve um erro ao realizar o pagamento."));
 
                 // Cancelar pagamento no gateway
                 await CancelPayment(payment.OrderId);
@@ -50,8 +49,8 @@ namespace FIAP.CloudGames.Payment.API.Services
 
         public async Task<ResponseMessage> CapturePayment(Guid orderId)
         {
-            var transacoes = await _paymentRepository.GetTransactionsByOrderId(orderId);
-            var authorizedTransaction = transacoes?.FirstOrDefault(t => t.Status == TransactionStatus.Authorized);
+            var transactions = await _paymentRepository.GetTransactionsByOrderId(orderId);
+            var authorizedTransaction = transactions?.FirstOrDefault(t => t.Status == TransactionStatus.Authorized);
             var validationResult = new ValidationResult();
 
             if (authorizedTransaction == null) throw new DomainException($"Transação não encontrada para o pedido {orderId}");
@@ -60,8 +59,7 @@ namespace FIAP.CloudGames.Payment.API.Services
 
             if (transaction.Status != TransactionStatus.Paid)
             {
-                validationResult.Errors.Add(new ValidationFailure("Pagamento",
-                    $"Não foi possível capturar o pagamento do pedido {orderId}"));
+                validationResult.Errors.Add(new ValidationFailure("Pagamento", $"Não foi possível capturar o pagamento do pedido {orderId}"));
 
                 return new ResponseMessage(validationResult);
             }

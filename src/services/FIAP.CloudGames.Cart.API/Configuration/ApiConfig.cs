@@ -11,7 +11,10 @@ namespace FIAP.CloudGames.Cart.API.Configuration
             services.AddDbContext<CartContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            });
 
             services.AddCors(options =>
             {

@@ -41,10 +41,10 @@ namespace FIAP.CloudGames.Order.API.Application.Commands
             if (!ValidateOrder(order)) return ValidationResult;
 
             // Processar pagamento
-            if (!await ProcessarPagamento(order, message)) return ValidationResult;
+            if (!await ProcessPayment(order, message)) return ValidationResult;
 
             // Se pagamento tudo ok!
-            order.AuthorizeOrder();
+             order.AuthorizeOrder();
 
             // Adicionar Evento
             order.AddEvent(new OrderPlacedEvent(order.Id, order.CustomerId));
@@ -124,7 +124,7 @@ namespace FIAP.CloudGames.Order.API.Application.Commands
             return true;
         }
 
-        public async Task<bool> ProcessarPagamento(Domain.Order.Order order, AddOrderCommand message)
+        public async Task<bool> ProcessPayment(Domain.Order.Order order, AddOrderCommand message)
         {
             var orderStarted = new OrderStartedIntegrationEvent
             {
@@ -134,12 +134,11 @@ namespace FIAP.CloudGames.Order.API.Application.Commands
                 PaymentType = 1,
                 CardName = message.CardName,
                 CardNumber = message.CardNumber,
-                ExpirationDate = message.ExpirationDate,
-                CVV = message.CvvCard
+                CardExpirationDate = message.CardExpirationDate,
+                CvvCard = message.CvvCard
             };
 
-            var result = await _bus
-                .RequestAsync<OrderStartedIntegrationEvent, ResponseMessage>(orderStarted);
+            var result = await _bus.RequestAsync<OrderStartedIntegrationEvent, ResponseMessage>(orderStarted);
 
             if (result.ValidationResult.IsValid) return true;
 

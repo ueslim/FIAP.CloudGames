@@ -12,7 +12,10 @@ namespace FIAP.CloudGames.Order.API.Configuration
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 sql => sql.MigrationsHistoryTable("__EFMigrationsHistory_Order", "dbo")));
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            });
 
             services.AddCors(options =>
             {

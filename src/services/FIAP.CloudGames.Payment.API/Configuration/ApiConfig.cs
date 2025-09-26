@@ -13,7 +13,10 @@ namespace FIAP.CloudGames.Payment.API.Configuration
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 sql => sql.MigrationsHistoryTable("__EFMigrationsHistory_Payment", "dbo")));
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            });
 
             services.Configure<PaymentConfig>(configuration.GetSection("PaymentConfig"));
 

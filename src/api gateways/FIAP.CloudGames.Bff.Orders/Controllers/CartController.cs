@@ -88,7 +88,7 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
         }
 
         [HttpPost]
-        [Route("compras/carrinho/aplicar-voucher")]
+        [Route("shopping/cart/apply-voucher")]
         public async Task<IActionResult> ApplyVoucher([FromBody] string voucherCode)
         {
             var voucher = await _orderService.GetVoucherByCode(voucherCode);

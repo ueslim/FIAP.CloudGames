@@ -18,11 +18,11 @@ namespace FIAP.CloudGames.Customer.API.Data.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(50)");
 
-            builder.Property(c => c.ZipCode)
+            builder.Property(c => c.PostalCode)
                 .IsRequired()
                 .HasColumnType("varchar(20)");
 
-            builder.Property(c => c.Complement)
+            builder.Property(c => c.AdditionalInfo)
                 .HasColumnType("varchar(250)");
 
             builder.Property(c => c.Neighborhood)

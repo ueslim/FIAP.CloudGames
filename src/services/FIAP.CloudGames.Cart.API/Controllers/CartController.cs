@@ -97,9 +97,7 @@ namespace FIAP.CloudGames.Cart.API.Controllers
 
         private async Task<CartCustomer> GetCustomerCart()
         {
-            return await _context.CartCustomer
-                .Include(c => c.Items)
-                .FirstOrDefaultAsync(c => c.CustomerId == _user.GetUserId());
+            return await _context.CartCustomer.Include(c => c.Items).FirstOrDefaultAsync(c => c.CustomerId == _user.GetUserId());
         }
 
         private void ManipulateNewCart(CartItem item)

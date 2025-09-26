@@ -25,7 +25,7 @@ namespace FIAP.CloudGames.Order.API.Application.Commands
         public string CardNumber { get; set; }
 
         public string CardName { get; set; }
-        public string ExpirationDate { get; set; }
+        public string CardExpirationDate { get; set; }
         public string CvvCard { get; set; }
 
         public override bool IsValid()
@@ -63,7 +63,7 @@ namespace FIAP.CloudGames.Order.API.Application.Commands
                     .LessThan(5)
                     .WithMessage("O CVV do cartão precisa ter 3 ou 4 números.");
 
-                RuleFor(c => c.ExpirationDate)
+                RuleFor(c => c.CardExpirationDate)
                     .NotNull()
                     .WithMessage("Data expiração do cartão requerida.");
             }

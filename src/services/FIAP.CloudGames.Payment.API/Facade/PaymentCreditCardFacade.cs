@@ -26,7 +26,7 @@ namespace FIAP.CloudGames.Payment.API.Facade
             };
             var cardHash = cardHashGen.Generate();
 
-            var transaction = new FakePayment.FakeTransaction(fakePaymentService)
+            var transaction = new FakeTransaction(fakePaymentService)
             {
                 CardHash = cardHash,
                 CardNumber = payment.CreditCard.CardNumber,
@@ -42,8 +42,7 @@ namespace FIAP.CloudGames.Payment.API.Facade
 
         public async Task<Models.Transaction> CapturePayment(Models.Transaction transaction)
         {
-            var fakePaymentService = new FakePaymentService(_paymentConfig.DefaultApiKey,
-                _paymentConfig.DefaultEncryptionKey);
+            var fakePaymentService = new FakePaymentService(_paymentConfig.DefaultApiKey, _paymentConfig.DefaultEncryptionKey);
 
             var transactionFacade = MapToTransaction(transaction, fakePaymentService);
 
@@ -52,15 +51,14 @@ namespace FIAP.CloudGames.Payment.API.Facade
 
         public async Task<Models.Transaction> CancelAuthorization(Models.Transaction transacao)
         {
-            var fakePaymentService = new FakePaymentService(_paymentConfig.DefaultApiKey,
-                _paymentConfig.DefaultEncryptionKey);
+            var fakePaymentService = new FakePaymentService(_paymentConfig.DefaultApiKey, _paymentConfig.DefaultEncryptionKey);
 
             var transaction = MapToTransaction(transacao, fakePaymentService);
 
             return MapToTransaction(await transaction.CancelAuthorization());
         }
 
-        public static Models.Transaction MapToTransaction(FakePayment.FakeTransaction transaction)
+        public static Models.Transaction MapToTransaction(FakeTransaction transaction)
         {
             return new Models.Transaction
             {
@@ -76,11 +74,11 @@ namespace FIAP.CloudGames.Payment.API.Facade
             };
         }
 
-        public static FakePayment.FakeTransaction MapToTransaction(Models.Transaction transacao, FakePaymentService fakePayment)
+        public static FakeTransaction MapToTransaction(Models.Transaction transacao, FakePaymentService fakePayment)
         {
-            return new FakePayment.FakeTransaction(fakePayment)
+            return new FakeTransaction(fakePayment)
             {
-                Status = (FakePayment.TransactionStatus)transacao.Status,
+                Status = (TransactionStatus)transacao.Status,
                 Amount = transacao.TotalValue,
                 CardBrand = transacao.CardBrand,
                 AuthorizationCode = transacao.AuthorizationCode,

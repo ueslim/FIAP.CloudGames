@@ -1,6 +1,7 @@
 ﻿using FIAP.CloudGames.Core.Validation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace FIAP.CloudGames.Bff.Orders.Models
 {
@@ -21,9 +22,10 @@ namespace FIAP.CloudGames.Bff.Orders.Models
         public decimal TotalValue { get; set; }
 
         public decimal Discount { get; set; }
-        public string VoucherCode { get; set; }
+        public string? VoucherCode { get; set; }
         public bool VoucherUsed { get; set; }
 
+        [JsonPropertyName("orderItems")]
         public List<ItemCartDTO> CartItems { get; set; }
 
         #endregion Order

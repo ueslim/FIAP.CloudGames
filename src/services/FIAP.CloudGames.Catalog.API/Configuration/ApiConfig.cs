@@ -11,7 +11,10 @@ namespace FIAP.CloudGames.Catalog.API.Configuration
             services.AddDbContext<CatalogContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            });
 
             services.AddCors(options =>
             {

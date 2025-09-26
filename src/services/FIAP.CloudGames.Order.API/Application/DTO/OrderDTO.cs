@@ -11,10 +11,10 @@
         public decimal TotalValue { get; set; }
 
         public decimal Discount { get; set; }
-        public string VoucherCode { get; set; }
+        public string? VoucherCode { get; set; }
         public bool VoucherUsed { get; set; }
 
-        public List<OrderItemDTO> OrdetItems { get; set; }
+        public List<OrderItemDTO> OrderItems { get; set; }
         public AddressDTO Address { get; set; }
 
         public static OrderDTO ToOrderDTO(Domain.Order.Order order)
@@ -28,13 +28,13 @@
                 TotalValue = order.TotalValue,
                 Discount = order.Discount,
                 VoucherUsed = order.VoucherUsed,
-                OrdetItems = new List<OrderItemDTO>(),
+                OrderItems = new List<OrderItemDTO>(),
                 Address = new AddressDTO()
             };
 
             foreach (var item in order.OrderItems)
             {
-                orderDTO.OrdetItems.Add(new OrderItemDTO
+                orderDTO.OrderItems.Add(new OrderItemDTO
                 {
                     Name = item.ProductName,
                     Image = item.ProductImage,

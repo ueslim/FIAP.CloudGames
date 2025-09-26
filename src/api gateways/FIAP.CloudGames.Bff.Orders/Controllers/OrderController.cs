@@ -56,7 +56,7 @@ namespace FIAP.CloudGames.Bff.Orders.Controllers
             return CustomResponse(order);
         }
 
-        [HttpGet("shopping/order/list-customer")]
+        [HttpGet("shopping/order/customer-list")]
         public async Task<IActionResult> ListByCustomer()
         {
             var orders = await _orderService.GetListByCustomerId();

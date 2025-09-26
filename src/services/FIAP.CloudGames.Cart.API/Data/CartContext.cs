@@ -19,40 +19,21 @@ namespace FIAP.CloudGames.Cart.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("cart");
-            foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
-                e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
-                property.SetColumnType("varchar(100)");
+
+            foreach (var prop in modelBuilder.Model.GetEntityTypes()
+                         .SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
+            {
+                prop.SetColumnType("varchar(100)");
+            }
 
             modelBuilder.Ignore<ValidationResult>();
 
-            modelBuilder.Entity<CartCustomer>()
-                .HasIndex(c => c.CustomerId)
-                .HasName("IDX_Customer");
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CartContext).Assembly);
 
-            modelBuilder.Entity<CartCustomer>()
-                .Ignore(c => c.Voucher)
-                .OwnsOne(c => c.Voucher, v =>
-                {
-                    v.Property(vc => vc.Code)
-                        .HasColumnName("Code")
-                        .HasColumnType("varchar(50)");
+            foreach (var fk in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+                fk.DeleteBehavior = DeleteBehavior.Cascade;
 
-                    v.Property(vc => vc.VoucherDiscountType)
-                        .HasColumnName("VoucherDiscountType");
-
-                    v.Property(vc => vc.Percentage)
-                        .HasColumnName("Percentage");
-
-                    v.Property(vc => vc.DiscountValue)
-                        .HasColumnName("DiscountValue");
-                });
-
-            modelBuilder.Entity<CartCustomer>()
-                .HasMany(c => c.Items)
-                .WithOne(i => i.CartCustomer)
-                .HasForeignKey(c => c.CartId);
-
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.Cascade;
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

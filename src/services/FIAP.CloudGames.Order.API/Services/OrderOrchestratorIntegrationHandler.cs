@@ -37,7 +37,7 @@ namespace FIAP.CloudGames.Order.API.Services
                 var bus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
 
                 var orderAuthorized = new OrderAuthorizedIntegrationEvent(order.CustomerId, order.Id,
-                    order.OrdetItems.ToDictionary(p => p.ProductId, p => p.Quantity));
+                    order.OrderItems.ToDictionary(p => p.ProductId, p => p.Quantity));
 
                 await bus.PublishAsync(orderAuthorized);
 

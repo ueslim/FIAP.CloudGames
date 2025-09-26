@@ -25,57 +25,61 @@ namespace FIAP.CloudGames.Order.API.Application.Queries
         public async Task<OrderDTO> GetLastOrder(Guid customerId)
         {
             const string sql = @"
-                                SELECT
-                                    -- Order
-                                    O.Id,
-                                    O.Code,
-                                    O.VoucherUsed,
-                                    O.Discount,
-                                    O.TotalValue,
-                                    O.OrderStatus,
-                                    O.RegisterDate   AS [Date],
+                            SELECT
+                                -- Order
+                                O.Id,
+                                O.CustomerId,
+                                O.Code,
+                                O.OrderStatus    AS Status,
+                                O.RegisterDate   AS [Date],
+                                O.TotalValue,
+                                O.Discount,
+                                O.VoucherUsed,
+                                V.Code           AS VoucherCode,  -- <- aqui
 
-                                    -- Address
-                                    O.Street,
-                                    O.Number,
-                                    O.Neighborhood,
-                                    O.PostalCode,
-                                    O.AdditionalInfo,
-                                    O.City,
-                                    O.State,
+                                -- Address
+                                O.Street         AS Street,
+                                O.Number         AS [Number],
+                                O.Neighborhood   AS Neighborhood,
+                                O.PostalCode     AS PostalCode,
+                                O.AdditionalInfo AS AdditionalInfo,
+                                O.City           AS City,
+                                O.State          AS [State],
 
-                                    -- Items
-                                    I.Id             AS OrderItemId,
-                                    I.ProductId,
-                                    I.ProductName,
-                                    I.Quantity,
-                                    I.ProductImage,
-                                    I.UnitValue
-                                FROM [order].[Orders] O
-                                INNER JOIN [order].[OrderItems] I ON O.Id = I.OrderId
-                                WHERE O.CustomerId = @customerId
-                                  AND O.RegisterDate BETWEEN DATEADD(minute, -3, SYSDATETIME()) AND SYSDATETIME()
-                                  AND O.OrderStatus = 1
-                                ORDER BY O.RegisterDate DESC;";
+                                -- Items
+                                I.Id             AS OrderItemId,
+                                I.ProductId,
+                                I.ProductName    AS [Name],
+                                I.Quantity,
+                                I.ProductImage   AS [Image],
+                                I.UnitValue      AS [Value]
+                            FROM [order].[Orders] O
+                            LEFT JOIN [order].[Vouchers] V ON V.Id = O.VoucherId
+                            INNER JOIN [order].[OrderItems] I ON O.Id = I.OrderId
+                            WHERE O.CustomerId = @customerId
+                              AND O.RegisterDate BETWEEN DATEADD(minute, -3, SYSDATETIME()) AND SYSDATETIME()
+                              AND O.OrderStatus = 1
+                            ORDER BY O.RegisterDate DESC;";
 
             var lookup = new Dictionary<Guid, OrderDTO>();
 
             await _orderRepository.GetConnection()
-                .QueryAsync<OrderDTO, OrderItemDTO, OrderDTO>(
+                .QueryAsync<OrderDTO, AddressDTO, OrderItemDTO, OrderDTO>(
                     sql,
-                    (o, item) =>
+                    (o, addr, item) =>
                     {
                         if (!lookup.TryGetValue(o.Id, out var dto))
                         {
                             dto = o;
-                            dto.OrdetItems ??= new List<OrderItemDTO>();
+                            dto.Address = addr;
+                            dto.OrderItems ??= new List<OrderItemDTO>();
                             lookup[o.Id] = dto;
                         }
-
-                        dto.OrdetItems.Add(item);
+                        dto.OrderItems.Add(item);
                         return dto;
                     },
-                    splitOn: "OrderItemId");
+                    new { customerId },
+                    splitOn: "Street,OrderItemId");
 
             return lookup.Values.FirstOrDefault();
         }
@@ -91,46 +95,58 @@ namespace FIAP.CloudGames.Order.API.Application.Queries
         {
             const string sql = @"
                                 SELECT
+                                    -- Order
                                     O.Id,
                                     O.CustomerId,
                                     O.Code,
+                                    O.OrderStatus    AS Status,
                                     O.RegisterDate   AS [Date],
-                                    O.OrderStatus,
                                     O.TotalValue,
                                     O.Discount,
                                     O.VoucherUsed,
+                                    V.Code           AS VoucherCode,   -- <- aqui
 
+                                    -- Address
+                                    O.Street,
+                                    O.Number,
+                                    O.Neighborhood,
+                                    O.PostalCode,
+                                    O.AdditionalInfo,
+                                    O.City,
+                                    O.State,
+
+                                    -- Items
                                     I.Id             AS OrderItemId,
                                     I.ProductId,
-                                    I.ProductName,
+                                    I.ProductName    AS [Name],
                                     I.Quantity,
-                                    I.UnitValue      AS Value,
-                                    I.ProductImage   AS Image
+                                    I.UnitValue      AS [Value],
+                                    I.ProductImage   AS [Image]
                                 FROM [order].[Orders] O
+                                LEFT JOIN [order].[Vouchers] V ON V.Id = O.VoucherId
                                 INNER JOIN [order].[OrderItems] I ON O.Id = I.OrderId
                                 WHERE O.OrderStatus = 1
-                                ORDER BY O.RegisterDate;";
+        ORDER BY O.RegisterDate;";
 
             var lookup = new Dictionary<Guid, OrderDTO>();
 
             await _orderRepository.GetConnection()
-                .QueryAsync<OrderDTO, OrderItemDTO, OrderDTO>(
+                .QueryAsync<OrderDTO, AddressDTO, OrderItemDTO, OrderDTO>(
                     sql,
-                    (o, item) =>
+                    (o, addr, item) =>
                     {
                         if (!lookup.TryGetValue(o.Id, out var dto))
                         {
                             dto = o;
-                            dto.OrdetItems ??= new List<OrderItemDTO>();
+                            dto.Address = addr;
+                            dto.OrderItems ??= new List<OrderItemDTO>();
                             lookup[o.Id] = dto;
                         }
-
-                        dto.OrdetItems.Add(item);
+                        dto.OrderItems.Add(item);
                         return dto;
                     },
-                    splitOn: "OrderItemId");
+                    splitOn: "Street,OrderItemId");
 
-            // oldest authorized order
             return lookup.Values.OrderBy(p => p.Date).FirstOrDefault();
         }
 
@@ -144,7 +160,7 @@ namespace FIAP.CloudGames.Order.API.Application.Queries
                 Discount = result[0].Discount,
                 VoucherUsed = result[0].VOUCHERUSED,
 
-                OrdetItems = new List<OrderItemDTO>(),
+                OrderItems = new List<OrderItemDTO>(),
                 Address = new AddressDTO
                 {
                     Street = result[0].STREET,
@@ -167,7 +183,7 @@ namespace FIAP.CloudGames.Order.API.Application.Queries
                     Image = item.PRODUCTIMAGE
                 };
 
-                order.OrdetItems.Add(orderItem);
+                order.OrderItems.Add(orderItem);
             }
 
             return order;

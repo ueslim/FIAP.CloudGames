@@ -51,7 +51,7 @@ namespace FIAP.CloudGames.Bff.Orders.Services
 
         public async Task<IEnumerable<OrderDTO>> GetListByCustomerId()
         {
-            var response = await _httpClient.GetAsync("/order/list-customer/");
+            var response = await _httpClient.GetAsync("/order/customer-list/");
 
             if (response.StatusCode == HttpStatusCode.NotFound) return null;
 

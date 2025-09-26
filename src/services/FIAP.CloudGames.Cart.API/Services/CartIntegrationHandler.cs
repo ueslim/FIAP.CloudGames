@@ -32,8 +32,7 @@ namespace FIAP.CloudGames.Cart.API.Services
             using var scope = _serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<CartContext>();
 
-            var cart = await context.CartCustomer
-                .FirstOrDefaultAsync(c => c.CustomerId == message.CustomerId);
+            var cart = await context.CartCustomer.FirstOrDefaultAsync(c => c.CustomerId == message.CustomerId);
 
             if (cart != null)
             {

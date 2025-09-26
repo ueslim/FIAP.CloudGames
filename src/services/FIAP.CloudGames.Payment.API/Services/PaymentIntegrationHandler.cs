@@ -18,16 +18,14 @@ namespace FIAP.CloudGames.Payment.API.Services
 
         private void SetResponder()
         {
-            _bus.RespondAsync<OrderStartedIntegrationEvent, ResponseMessage>(async request => await AutorizarPagamento(request));
+            _bus.RespondAsync<OrderStartedIntegrationEvent, ResponseMessage>(async request => await AuthorizePayment(request));
         }
 
         private void SetSubscribers()
         {
-            _bus.SubscribeAsync<OrderCanceledIntegrationEvent>("OrderCanceled", async request =>
-            await CancelPayment(request));
+            _bus.SubscribeAsync<OrderCanceledIntegrationEvent>("OrderCanceled", async request => await CancelPayment(request));
 
-            _bus.SubscribeAsync<OrderStockDeductedIntegrationEvent>("OrderStockDeductedIntegrationEvent", async request =>
-            await CapturePayment(request));
+            _bus.SubscribeAsync<OrderStockDeductedIntegrationEvent>("OrderStockDeductedIntegrationEvent", async request => await CapturePayment(request));
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,17 +35,17 @@ namespace FIAP.CloudGames.Payment.API.Services
             return Task.CompletedTask;
         }
 
-        private async Task<ResponseMessage> AutorizarPagamento(OrderStartedIntegrationEvent message)
+        private async Task<ResponseMessage> AuthorizePayment(OrderStartedIntegrationEvent message)
         {
             using var scope = _serviceProvider.CreateScope();
             var paymentService = scope.ServiceProvider.GetRequiredService<IPaymentService>();
+
             var payment = new Models.Payment
             {
                 OrderId = message.OrderId,
                 PaymentType = (PaymentType)message.PaymentType,
                 Value = message.Value,
-                CreditCard = new CreditCard(
-                    message.CardName, message.CardNumber, message.ExpirationDate, message.CVV)
+                CreditCard = new CreditCard(message.CardName, message.CardNumber, message.CardExpirationDate, message.CvvCard)
             };
 
             var response = await paymentService.AuthorizePayment(payment);

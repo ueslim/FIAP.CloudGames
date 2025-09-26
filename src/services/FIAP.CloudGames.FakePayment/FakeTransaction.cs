@@ -92,7 +92,7 @@
 
         public Task<FakeTransaction> AuthorizeCardTransaction()
         {
-            var success = new Random().Next(2) == 0;
+            var success = true;//new Random().Next(2) == 0;
             FakeTransaction transaction;
 
             if (success)

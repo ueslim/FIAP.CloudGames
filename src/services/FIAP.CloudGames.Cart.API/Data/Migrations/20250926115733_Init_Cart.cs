@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -23,10 +24,10 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
                     TotalValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UsedVoucher = table.Column<bool>(type: "bit", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Percentage = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    DiscountValue = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Code = table.Column<string>(type: "varchar(50)", nullable: false),
-                    VoucherDiscountType = table.Column<int>(type: "int", nullable: false)
+                    VoucherPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    VoucherDiscountValue = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    VoucherCode = table.Column<string>(type: "varchar(50)", nullable: true),
+                    VoucherDiscountType = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

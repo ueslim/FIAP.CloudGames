@@ -34,7 +34,7 @@ namespace FIAP.CloudGames.Bff.Orders.Services
         {
             var idsRequest = string.Join(",", ids);
 
-            var response = await _httpClient.GetAsync($"/catalog/product/list/{idsRequest}/");
+            var response = await _httpClient.GetAsync($"/catalog/products/list/{idsRequest}/");
 
             HandleErrorResponse(response);
 

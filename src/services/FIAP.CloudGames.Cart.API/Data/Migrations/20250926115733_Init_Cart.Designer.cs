@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIAP.CloudGames.Cart.API.Data.Migrations
 {
     [DbContext(typeof(CartContext))]
-    [Migration("20250925230640_Init_Cart")]
+    [Migration("20250926115733_Init_Cart")]
     partial class Init_Cart
     {
         /// <inheritdoc />
@@ -93,19 +93,18 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Code")
-                                .IsRequired()
                                 .HasColumnType("varchar(50)")
-                                .HasColumnName("Code");
+                                .HasColumnName("VoucherCode");
 
                             b1.Property<decimal?>("DiscountValue")
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("DiscountValue");
+                                .HasColumnName("VoucherDiscountValue");
 
                             b1.Property<decimal?>("Percentage")
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("Percentage");
+                                .HasColumnName("VoucherPercentage");
 
-                            b1.Property<int>("VoucherDiscountType")
+                            b1.Property<int?>("VoucherDiscountType")
                                 .HasColumnType("int")
                                 .HasColumnName("VoucherDiscountType");
 
@@ -117,8 +116,7 @@ namespace FIAP.CloudGames.Cart.API.Data.Migrations
                                 .HasForeignKey("CartCustomerId");
                         });
 
-                    b.Navigation("Voucher")
-                        .IsRequired();
+                    b.Navigation("Voucher");
                 });
 
             modelBuilder.Entity("FIAP.CloudGames.Cart.API.Model.CartItem", b =>

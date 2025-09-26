@@ -9,7 +9,7 @@
 
         public string CardName { get; set; }
         public string CardNumber { get; set; }
-        public string ExpirationDate { get; set; }
-        public string CVV { get; set; }
+        public string CardExpirationDate { get; set; }
+        public string CvvCard { get; set; }
     }
 }

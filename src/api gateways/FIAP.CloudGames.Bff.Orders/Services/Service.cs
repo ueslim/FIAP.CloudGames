@@ -7,10 +7,13 @@ namespace FIAP.CloudGames.Bff.Orders.Services
 {
     public abstract class Service
     {
-        protected StringContent GetContent(object dado)
+        private static readonly JsonSerializerOptions _jsonOptions =
+    new(JsonSerializerDefaults.Web);
+
+        protected StringContent GetContent(object data)
         {
             return new StringContent(
-                JsonSerializer.Serialize(dado),
+                JsonSerializer.Serialize(data, _jsonOptions),
                 Encoding.UTF8,
                 "application/json");
         }
