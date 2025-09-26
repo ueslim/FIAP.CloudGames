@@ -32,41 +32,41 @@ namespace FIAP.CloudGames.Catalog.API.Services
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var produtosComEstoque = new List<Product>();
-                var produtoRepository = scope.ServiceProvider.GetRequiredService<IProductRepository>();
+                var productsWithStock = new List<Product>();
+                var productRepository = scope.ServiceProvider.GetRequiredService<IProductRepository>();
 
-                var idsProdutos = string.Join(",", message.Items.Select(c => c.Key));
-                var produtos = await produtoRepository.GetProductsById(idsProdutos);
+                var idsProducts = string.Join(",", message.Items.Select(c => c.Key));
+                var products = await productRepository.GetProductsById(idsProducts);
 
-                if (produtos.Count != message.Items.Count)
+                if (products.Count != message.Items.Count)
                 {
                     CancelOrderForInsufficientStock(message);
                     return;
                 }
 
-                foreach (var product in produtos)
+                foreach (var product in products)
                 {
-                    var quantidadeProduto = message.Items.FirstOrDefault(p => p.Key == product.Id).Value;
+                    var productQuantity = message.Items.FirstOrDefault(p => p.Key == product.Id).Value;
 
-                    if (product.IsAvailable(quantidadeProduto))
+                    if (product.IsAvailable(productQuantity))
                     {
-                        product.DecrementStock(quantidadeProduto);
-                        produtosComEstoque.Add(product);
+                        product.DecrementStock(productQuantity);
+                        productsWithStock.Add(product);
                     }
                 }
 
-                if (produtosComEstoque.Count != message.Items.Count)
+                if (productsWithStock.Count != message.Items.Count)
                 {
                     CancelOrderForInsufficientStock(message);
                     return;
                 }
 
-                foreach (var produto in produtosComEstoque)
+                foreach (var produto in productsWithStock)
                 {
-                    produtoRepository.Update(produto);
+                    productRepository.Update(produto);
                 }
 
-                if (!await produtoRepository.UnitOfWork.Commit())
+                if (!await productRepository.UnitOfWork.Commit())
                 {
                     throw new DomainException($"Problemas ao atualizar estoque do pedido {message.OrderId}");
                 }
@@ -78,8 +78,8 @@ namespace FIAP.CloudGames.Catalog.API.Services
 
         public async void CancelOrderForInsufficientStock(OrderAuthorizedIntegrationEvent message)
         {
-            var pedidoCancelado = new OrderStockDeductedIntegrationEvent(message.CustomerId, message.OrderId);
-            await _bus.PublishAsync(pedidoCancelado);
+            var orderCanceled = new OrderStockDeductedIntegrationEvent(message.CustomerId, message.OrderId);
+            await _bus.PublishAsync(orderCanceled);
         }
     }
 }

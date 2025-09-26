@@ -24,11 +24,9 @@ namespace FIAP.CloudGames.Order.API.Services
 
         private void SetSubscribers()
         {
-            _bus.SubscribeAsync<OrderCanceledIntegrationEvent>("PedidoCancelado",
-                async request => await CancelOrder(request));
+            _bus.SubscribeAsync<OrderCanceledIntegrationEvent>("OrderCanceled",async request => await CancelOrder(request));
 
-            _bus.SubscribeAsync<OrderPaidIntegrationEvent>("PedidoPago",
-               async request => await FinishOrder(request));
+            _bus.SubscribeAsync<OrderPaidIntegrationEvent>("OrderPaid",async request => await FinishOrder(request));
         }
 
         private async Task CancelOrder(OrderCanceledIntegrationEvent message)

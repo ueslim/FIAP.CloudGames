@@ -20,7 +20,7 @@ namespace FIAP.CloudGames.Order.API.Services
         {
             _logger.LogInformation("Serviço de pedidos iniciado.");
 
-            _timer = new Timer(ProcessOrders, null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
+            _timer = new Timer(ProcessOrders, null, TimeSpan.Zero, TimeSpan.FromMinutes(15));
 
             return Task.CompletedTask;
         }
@@ -36,8 +36,7 @@ namespace FIAP.CloudGames.Order.API.Services
 
                 var bus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
 
-                var orderAuthorized = new OrderAuthorizedIntegrationEvent(order.CustomerId, order.Id,
-                    order.OrderItems.ToDictionary(p => p.ProductId, p => p.Quantity));
+                var orderAuthorized = new OrderAuthorizedIntegrationEvent(order.CustomerId, order.Id, order.OrderItems.ToDictionary(p => p.ProductId, p => p.Quantity));
 
                 await bus.PublishAsync(orderAuthorized);
 
