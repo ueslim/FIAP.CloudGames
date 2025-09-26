@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace FIAP.CloudGames.FakePayment
@@ -29,7 +28,7 @@ namespace FIAP.CloudGames.FakePayment
 
             using var msEncrypt = new MemoryStream();
             using var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-            
+
             using (var swEncrypt = new StreamWriter(csEncrypt))
             {
                 swEncrypt.Write(CardHolderName + CardNumber + CardExpirationDate + CardCvv);

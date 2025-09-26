@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FIAP.CloudGames.Bff.Orders.Models
+﻿namespace FIAP.CloudGames.Bff.Orders.Models
 {
     public class CartDTO
     {

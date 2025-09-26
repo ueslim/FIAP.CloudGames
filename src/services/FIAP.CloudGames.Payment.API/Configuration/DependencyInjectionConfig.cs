@@ -16,7 +16,7 @@ namespace FIAP.CloudGames.Payment.API.Configuration
 
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IPaymentFacade, PaymentCreditCardFacade>();
-                                
+
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<PaymentContext>();
         }

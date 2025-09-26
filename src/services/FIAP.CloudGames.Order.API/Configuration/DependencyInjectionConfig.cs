@@ -4,7 +4,6 @@ using FIAP.CloudGames.Order.API.Application.Events;
 using FIAP.CloudGames.Order.API.Application.Queries;
 using FIAP.CloudGames.Order.Domain.Order;
 using FIAP.CloudGames.Order.Domain.Voucher;
-using FIAP.CloudGames.Order.Infra.Data;
 using FIAP.CloudGames.Order.Infra.Data.Repository;
 using FIAP.CloudGames.WebAPI.Core.User;
 using FluentValidation.Results;

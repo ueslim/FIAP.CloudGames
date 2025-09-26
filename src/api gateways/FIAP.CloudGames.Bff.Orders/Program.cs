@@ -18,7 +18,6 @@ builder.Services.AddSwaggerConfiguration();
 
 builder.Services.RegisterServices();
 
-
 var app = builder.Build();
 
 app.UseSwaggerConfiguration();

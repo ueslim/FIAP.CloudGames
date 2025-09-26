@@ -1,7 +1,6 @@
 ﻿using FIAP.CloudGames.Catalog.API.Data;
 using FIAP.CloudGames.Catalog.API.Data.Repository;
 using FIAP.CloudGames.Catalog.API.Models;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FIAP.CloudGames.Catalog.API.Configuration
 {

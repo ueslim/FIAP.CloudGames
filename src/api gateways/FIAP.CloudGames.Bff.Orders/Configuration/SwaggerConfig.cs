@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 
 namespace FIAP.CloudGames.Bff.Orders.Configuration
 {
@@ -43,7 +40,6 @@ namespace FIAP.CloudGames.Bff.Orders.Configuration
                         new string[] {}
                     }
                 });
-
             });
         }
 

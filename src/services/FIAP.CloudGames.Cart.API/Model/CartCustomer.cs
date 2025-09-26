@@ -1,8 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FIAP.CloudGames.Cart.API.Model
 {
@@ -65,7 +62,6 @@ namespace FIAP.CloudGames.Cart.API.Model
             TotalValue = value < 0 ? 0 : value;
             Discount = discount;
         }
-
 
         internal void CalculateCartValue()
         {

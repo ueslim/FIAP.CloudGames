@@ -1,6 +1,6 @@
 ﻿using FIAP.CloudGames.Customer.API.Data;
-using Microsoft.EntityFrameworkCore;
 using FIAP.CloudGames.WebAPI.Core.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FIAP.CloudGames.Customer.API.Configuration
 {
@@ -9,7 +9,7 @@ namespace FIAP.CloudGames.Customer.API.Configuration
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<CustomerContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 sql => sql.MigrationsHistoryTable("__EFMigrationsHistory_Customer", "dbo")));
 
             services.AddControllers();

@@ -1,7 +1,5 @@
-﻿using System;
+﻿using NetDevPack.Specification;
 using System.Linq.Expressions;
-using FIAP.CloudGames.Order.Domain.Voucher;
-using NetDevPack.Specification;
 
 namespace FIAP.CloudGames.Order.Domain.Voucher.Specs
 {

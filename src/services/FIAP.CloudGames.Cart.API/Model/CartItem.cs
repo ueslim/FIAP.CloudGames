@@ -1,6 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
 using System.Text.Json.Serialization;
-using FluentValidation;
 
 namespace FIAP.CloudGames.Cart.API.Model
 {

@@ -21,14 +21,13 @@ builder.Services.RegisterServices();
 
 var app = builder.Build();
 
-//SEED 
+//SEED
 
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
     await CatalogContextSeed.EnsureSeedProducts(context);
 }
-
 
 app.UseSwaggerConfiguration();
 

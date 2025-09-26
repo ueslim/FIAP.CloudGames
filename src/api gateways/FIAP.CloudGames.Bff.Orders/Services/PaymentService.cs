@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using FIAP.CloudGames.Bff.Orders.Extensions;
+﻿using FIAP.CloudGames.Bff.Orders.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace FIAP.CloudGames.Bff.Orders.Services

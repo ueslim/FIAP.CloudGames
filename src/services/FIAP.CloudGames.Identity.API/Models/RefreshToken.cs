@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FIAP.CloudGames.Identity.API.Models
+﻿namespace FIAP.CloudGames.Identity.API.Models
 {
     public class RefreshToken
     {

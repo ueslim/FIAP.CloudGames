@@ -11,7 +11,7 @@ using MediatR;
 
 namespace FIAP.CloudGames.Order.API.Application.Commands
 {
-    public class OrderCommandHandler : CommandHandler,IRequestHandler<AddOrderCommand, ValidationResult>
+    public class OrderCommandHandler : CommandHandler, IRequestHandler<AddOrderCommand, ValidationResult>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IVoucherRepository _voucherRepository;

@@ -1,6 +1,6 @@
 ﻿using FIAP.CloudGames.Catalog.API.Data;
-using Microsoft.EntityFrameworkCore;
 using FIAP.CloudGames.WebAPI.Core.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FIAP.CloudGames.Catalog.API.Configuration
 {

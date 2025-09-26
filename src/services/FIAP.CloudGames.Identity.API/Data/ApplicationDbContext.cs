@@ -11,6 +11,7 @@ namespace FIAP.CloudGames.Identity.API.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+
         public DbSet<KeyMaterial> SecurityKeys { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 

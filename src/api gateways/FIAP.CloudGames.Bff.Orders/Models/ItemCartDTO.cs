@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FIAP.CloudGames.Bff.Orders.Models
+﻿namespace FIAP.CloudGames.Bff.Orders.Models
 {
     public class ItemCartDTO
     {

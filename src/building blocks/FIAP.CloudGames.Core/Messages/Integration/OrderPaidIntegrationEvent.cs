@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FIAP.CloudGames.Core.Messages.Integration
+﻿namespace FIAP.CloudGames.Core.Messages.Integration
 {
     public class OrderPaidIntegrationEvent : IntegrationEvent
     {

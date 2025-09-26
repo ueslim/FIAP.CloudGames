@@ -7,7 +7,8 @@
         public string ExpirationDate { get; set; }
         public string CVV { get; set; }
 
-        protected CreditCard() { }
+        protected CreditCard()
+        { }
 
         public CreditCard(string cardName, string cardNumber, string expirationDate, string cvv)
         {
