@@ -25,41 +25,46 @@ namespace FIAP.CloudGames.Order.API.Application.Queries
         public async Task<OrderDTO> GetLastOrder(Guid customerId)
         {
             const string sql = @"
-                            SELECT
-                                -- Order
-                                O.Id,
-                                O.CustomerId,
-                                O.Code,
-                                O.OrderStatus    AS Status,
-                                O.RegisterDate   AS [Date],
-                                O.TotalValue,
-                                O.Discount,
-                                O.VoucherUsed,
-                                V.Code           AS VoucherCode,  -- <- aqui
+                                ;WITH LastOrder AS (
+                                    SELECT TOP (1) Id
+                                    FROM [order].[Orders]
+                                    WHERE CustomerId = @customerId
+                                      AND OrderStatus = 1
+                                    ORDER BY RegisterDate DESC
+                                )
+                                SELECT
+                                    -- Order
+                                    O.Id,
+                                    O.CustomerId,
+                                    O.Code,
+                                    O.OrderStatus    AS Status,
+                                    O.RegisterDate   AS [Date],
+                                    O.TotalValue,
+                                    O.Discount,
+                                    O.VoucherUsed,
+                                    V.Code           AS VoucherCode,
 
-                                -- Address
-                                O.Street         AS Street,
-                                O.Number         AS [Number],
-                                O.Neighborhood   AS Neighborhood,
-                                O.PostalCode     AS PostalCode,
-                                O.AdditionalInfo AS AdditionalInfo,
-                                O.City           AS City,
-                                O.State          AS [State],
+                                    -- Address
+                                    O.Street         AS Street,
+                                    O.Number         AS [Number],
+                                    O.Neighborhood   AS Neighborhood,
+                                    O.PostalCode     AS PostalCode,
+                                    O.AdditionalInfo AS AdditionalInfo,
+                                    O.City           AS City,
+                                    O.State          AS [State],
 
-                                -- Items
-                                I.Id             AS OrderItemId,
-                                I.ProductId,
-                                I.ProductName    AS [Name],
-                                I.Quantity,
-                                I.ProductImage   AS [Image],
-                                I.UnitValue      AS [Value]
-                            FROM [order].[Orders] O
-                            LEFT JOIN [order].[Vouchers] V ON V.Id = O.VoucherId
-                            INNER JOIN [order].[OrderItems] I ON O.Id = I.OrderId
-                            WHERE O.CustomerId = @customerId
-                              AND O.RegisterDate BETWEEN DATEADD(minute, -3, SYSDATETIME()) AND SYSDATETIME()
-                              AND O.OrderStatus = 1
-                            ORDER BY O.RegisterDate DESC;";
+                                    -- Items
+                                    I.Id             AS OrderItemId,
+                                    I.ProductId,
+                                    I.ProductName    AS [Name],
+                                    I.Quantity,
+                                    I.ProductImage   AS [Image],
+                                    I.UnitValue      AS [Value]
+                                FROM [order].[Orders] O
+                                INNER JOIN LastOrder L ON L.Id = O.Id
+                                LEFT JOIN [order].[Vouchers] V ON V.Id = O.VoucherId
+                                INNER JOIN [order].[OrderItems] I ON O.Id = I.OrderId
+                                ORDER BY O.RegisterDate DESC;";
 
             var lookup = new Dictionary<Guid, OrderDTO>();
 
