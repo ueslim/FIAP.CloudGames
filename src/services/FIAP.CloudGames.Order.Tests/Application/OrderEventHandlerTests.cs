@@ -15,13 +15,13 @@ namespace FIAP.CloudGames.Order.Tests.Application
         public async Task Handle_Should_Publish_OrderPlacedIntegrationEvent()
         {
             var bus = new Mock<IMessageBus>(MockBehavior.Strict);
-            bus.Setup(b => b.PublishAsync(It.IsAny<OrderPlacedIntegrationEvent>())).Returns(Task.CompletedTask);
+            bus.Setup(b => b.PublishAsync(It.IsAny<OrderFinishedIntegrationEvent>())).Returns(Task.CompletedTask);
 
             var handler = new OrderEventHandler(bus.Object);
 
-            await handler.Handle(new OrderPlacedEvent(Guid.NewGuid(), Guid.NewGuid()), CancellationToken.None);
+            await handler.Handle(new OrderFinishedEvent(Guid.NewGuid(), Guid.NewGuid()), CancellationToken.None);
 
-            bus.Verify(b => b.PublishAsync(It.IsAny<OrderPlacedIntegrationEvent>()), Times.Once);
+            bus.Verify(b => b.PublishAsync(It.IsAny<OrderFinishedIntegrationEvent>()), Times.Once);
         }
     }
 }

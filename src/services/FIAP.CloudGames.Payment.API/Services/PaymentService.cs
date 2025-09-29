@@ -11,8 +11,7 @@ namespace FIAP.CloudGames.Payment.API.Services
         private readonly IPaymentFacade _paymentFacade;
         private readonly IPaymentRepository _paymentRepository;
 
-        public PaymentService(IPaymentFacade paymentFacade,
-                                IPaymentRepository paymentRepository)
+        public PaymentService(IPaymentFacade paymentFacade, IPaymentRepository paymentRepository)
         {
             _paymentFacade = paymentFacade;
             _paymentRepository = paymentRepository;
@@ -20,7 +19,9 @@ namespace FIAP.CloudGames.Payment.API.Services
 
         public async Task<ResponseMessage> AuthorizePayment(Models.Payment payment)
         {
+            // Pergunta ao Provider se foi autorizado ou nao
             var transaction = await _paymentFacade.AuthorizePayment(payment);
+
             var validationResult = new ValidationResult();
 
             if (transaction.Status != TransactionStatus.Authorized)
@@ -30,6 +31,7 @@ namespace FIAP.CloudGames.Payment.API.Services
                 return new ResponseMessage(validationResult);
             }
 
+            // Se autorizado, adiciona o pagamento junto com a transação
             payment.AddTransaction(transaction);
 
             _paymentRepository.AddPayment(payment);
@@ -38,7 +40,7 @@ namespace FIAP.CloudGames.Payment.API.Services
             {
                 validationResult.Errors.Add(new ValidationFailure("Pagamento", "Houve um erro ao realizar o pagamento."));
 
-                // Cancelar pagamento no gateway
+                // Cancelar pagamento no gateway (Em teoria a transaction falhou ao ser salva, mas ela ainda existe no Tracking podendo ser recuperado)
                 await CancelPayment(payment.OrderId);
 
                 return new ResponseMessage(validationResult);

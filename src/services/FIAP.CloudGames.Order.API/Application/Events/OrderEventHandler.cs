@@ -4,7 +4,7 @@ using MediatR;
 
 namespace FIAP.CloudGames.Order.API.Application.Events
 {
-    public class OrderEventHandler : INotificationHandler<OrderPlacedEvent>
+    public class OrderEventHandler : INotificationHandler<OrderFinishedEvent>
     {
         private readonly IMessageBus _bus;
 
@@ -13,9 +13,10 @@ namespace FIAP.CloudGames.Order.API.Application.Events
             _bus = bus;
         }
 
-        public async Task Handle(OrderPlacedEvent message, CancellationToken cancellationToken)
+        //  API Order manda para si mesmo um evento e depois um integration event
+        public async Task Handle(OrderFinishedEvent message, CancellationToken cancellationToken)
         {
-            await _bus.PublishAsync(new OrderPlacedIntegrationEvent(message.CustomerId));
+            await _bus.PublishAsync(new OrderFinishedIntegrationEvent(message.CustomerId));
         }
     }
 }

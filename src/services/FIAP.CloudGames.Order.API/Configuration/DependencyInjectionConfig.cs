@@ -29,7 +29,7 @@ namespace FIAP.CloudGames.Order.API.Configuration
             services.AddScoped<IRequestHandler<AddOrderCommand, ValidationResult>, OrderCommandHandler>();
 
             // Events
-            services.AddScoped<INotificationHandler<OrderPlacedEvent>, OrderEventHandler>();
+            services.AddScoped<INotificationHandler<OrderFinishedEvent>, OrderEventHandler>();
 
             // Application
             services.AddScoped<IMediatorHandler, MediatorHandler>();

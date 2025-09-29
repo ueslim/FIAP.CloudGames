@@ -1,10 +1,10 @@
 ﻿namespace FIAP.CloudGames.Core.Messages.Integration
 {
-    public class OrderPlacedIntegrationEvent : IntegrationEvent
+    public class OrderFinishedIntegrationEvent : IntegrationEvent
     {
         public Guid CustomerId { get; private set; }
 
-        public OrderPlacedIntegrationEvent(Guid customerId)
+        public OrderFinishedIntegrationEvent(Guid customerId)
         {
             CustomerId = customerId;
         }

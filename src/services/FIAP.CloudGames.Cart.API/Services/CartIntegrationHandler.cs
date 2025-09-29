@@ -24,10 +24,10 @@ namespace FIAP.CloudGames.Cart.API.Services
 
         private void SetSubscribers()
         {
-            _bus.SubscribeAsync<OrderPlacedIntegrationEvent>("OrderPlaced", async request => await DeleteCart(request));
+            _bus.SubscribeAsync<OrderFinishedIntegrationEvent>("OrderPlaced", async request => await DeleteCart(request));
         }
 
-        private async Task DeleteCart(OrderPlacedIntegrationEvent message)
+        private async Task DeleteCart(OrderFinishedIntegrationEvent message)
         {
             using var scope = _serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<CartContext>();

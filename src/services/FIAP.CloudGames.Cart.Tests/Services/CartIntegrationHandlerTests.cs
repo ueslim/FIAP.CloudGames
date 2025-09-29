@@ -53,14 +53,14 @@ namespace FIAP.CloudGames.Cart.Tests.Services
             var provider = BuildServiceProvider(dbName);
 
             string capturedTopic = null;
-            Func<OrderPlacedIntegrationEvent, Task> capturedHandler = null;
+            Func<OrderFinishedIntegrationEvent, Task> capturedHandler = null;
 
             var busMock = new Mock<IMessageBus>();
             busMock
-                .Setup(b => b.SubscribeAsync<OrderPlacedIntegrationEvent>(
+                .Setup(b => b.SubscribeAsync<OrderFinishedIntegrationEvent>(
                     It.IsAny<string>(),
-                    It.IsAny<Func<OrderPlacedIntegrationEvent, Task>>()))
-                .Callback<string, Func<OrderPlacedIntegrationEvent, Task>>((topic, handler) =>
+                    It.IsAny<Func<OrderFinishedIntegrationEvent, Task>>()))
+                .Callback<string, Func<OrderFinishedIntegrationEvent, Task>>((topic, handler) =>
                 {
                     capturedTopic = topic;
                     capturedHandler = handler;
@@ -73,8 +73,8 @@ namespace FIAP.CloudGames.Cart.Tests.Services
             await sut.StopAsync(CancellationToken.None);
 
             // Assert
-            busMock.Verify(b => b.SubscribeAsync<OrderPlacedIntegrationEvent>(
-                    It.IsAny<string>(), It.IsAny<Func<OrderPlacedIntegrationEvent, Task>>()),
+            busMock.Verify(b => b.SubscribeAsync<OrderFinishedIntegrationEvent>(
+                    It.IsAny<string>(), It.IsAny<Func<OrderFinishedIntegrationEvent, Task>>()),
                 Times.Once);
 
             capturedTopic.Should().Be("OrderPlaced");
@@ -98,13 +98,13 @@ namespace FIAP.CloudGames.Cart.Tests.Services
                 await ctx.SaveChangesAsync();
             }
 
-            Func<OrderPlacedIntegrationEvent, Task> capturedHandler = null;
+            Func<OrderFinishedIntegrationEvent, Task> capturedHandler = null;
             var busMock = new Mock<IMessageBus>();
             busMock
-                .Setup(b => b.SubscribeAsync<OrderPlacedIntegrationEvent>(
+                .Setup(b => b.SubscribeAsync<OrderFinishedIntegrationEvent>(
                     It.IsAny<string>(),
-                    It.IsAny<Func<OrderPlacedIntegrationEvent, Task>>()))
-                .Callback<string, Func<OrderPlacedIntegrationEvent, Task>>((_, handler) =>
+                    It.IsAny<Func<OrderFinishedIntegrationEvent, Task>>()))
+                .Callback<string, Func<OrderFinishedIntegrationEvent, Task>>((_, handler) =>
                 {
                     capturedHandler = handler;
                 }); // <-- sem .Returns(...)
@@ -120,7 +120,7 @@ namespace FIAP.CloudGames.Cart.Tests.Services
             }
 
             // Act: simula mensagem do bus
-            await capturedHandler!(new OrderPlacedIntegrationEvent(existingCustomerId));
+            await capturedHandler!(new OrderFinishedIntegrationEvent(existingCustomerId));
 
             // Assert: cart removido
             using (var post = provider.CreateScope())
@@ -146,13 +146,13 @@ namespace FIAP.CloudGames.Cart.Tests.Services
                 await ctx.SaveChangesAsync();
             }
 
-            Func<OrderPlacedIntegrationEvent, Task> capturedHandler = null;
+            Func<OrderFinishedIntegrationEvent, Task> capturedHandler = null;
             var busMock = new Mock<IMessageBus>();
             busMock
-                .Setup(b => b.SubscribeAsync<OrderPlacedIntegrationEvent>(
+                .Setup(b => b.SubscribeAsync<OrderFinishedIntegrationEvent>(
                     It.IsAny<string>(),
-                    It.IsAny<Func<OrderPlacedIntegrationEvent, Task>>()))
-                .Callback<string, Func<OrderPlacedIntegrationEvent, Task>>((_, handler) =>
+                    It.IsAny<Func<OrderFinishedIntegrationEvent, Task>>()))
+                .Callback<string, Func<OrderFinishedIntegrationEvent, Task>>((_, handler) =>
                 {
                     capturedHandler = handler;
                 }); // <-- sem .Returns(...)
@@ -161,7 +161,7 @@ namespace FIAP.CloudGames.Cart.Tests.Services
             await sut.StartAsync(CancellationToken.None);
 
             // Act: evento para cliente inexistente
-            await capturedHandler!(new OrderPlacedIntegrationEvent(Guid.NewGuid()));
+            await capturedHandler!(new OrderFinishedIntegrationEvent(Guid.NewGuid()));
 
             // Assert: cart original permanece
             using (var scope2 = provider.CreateScope())

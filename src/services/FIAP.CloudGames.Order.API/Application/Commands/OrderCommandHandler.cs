@@ -47,7 +47,7 @@ namespace FIAP.CloudGames.Order.API.Application.Commands
              order.AuthorizeOrder();
 
             // Adicionar Evento
-            order.AddEvent(new OrderPlacedEvent(order.Id, order.CustomerId));
+            order.AddEvent(new OrderFinishedEvent(order.Id, order.CustomerId));
 
             // Adicionar Pedido Repositorio
             _orderRepository.Add(order);
@@ -126,7 +126,7 @@ namespace FIAP.CloudGames.Order.API.Application.Commands
 
         public async Task<bool> ProcessPayment(Domain.Order.Order order, AddOrderCommand message)
         {
-            var orderStarted = new OrderStartedIntegrationEvent
+            var orderStarted = new OrderProcessingStartedIntegrationEvent
             {
                 OrderId = order.Id,
                 CustomerId = order.CustomerId,
@@ -138,7 +138,7 @@ namespace FIAP.CloudGames.Order.API.Application.Commands
                 CvvCard = message.CvvCard
             };
 
-            var result = await _bus.RequestAsync<OrderStartedIntegrationEvent, ResponseMessage>(orderStarted);
+            var result = await _bus.RequestAsync<OrderProcessingStartedIntegrationEvent, ResponseMessage>(orderStarted);
 
             if (result.ValidationResult.IsValid) return true;
 

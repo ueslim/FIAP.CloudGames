@@ -32,8 +32,8 @@ namespace FIAP.CloudGames.Payments.Tests.Services
             var bus = new Mock<IMessageBus>(MockBehavior.Loose);
 
             // opcional: só para confirmar que são registrados
-            bus.Setup(b => b.RespondAsync<OrderStartedIntegrationEvent, ResponseMessage>(
-                It.IsAny<Func<OrderStartedIntegrationEvent, Task<ResponseMessage>>>())).Verifiable();
+            bus.Setup(b => b.RespondAsync<OrderProcessingStartedIntegrationEvent, ResponseMessage>(
+                It.IsAny<Func<OrderProcessingStartedIntegrationEvent, Task<ResponseMessage>>>())).Verifiable();
             bus.Setup(b => b.SubscribeAsync<OrderCanceledIntegrationEvent>(
                 It.IsAny<string>(), It.IsAny<Func<OrderCanceledIntegrationEvent, Task>>())).Verifiable();
             bus.Setup(b => b.SubscribeAsync<OrderStockDeductedIntegrationEvent>(
@@ -58,15 +58,15 @@ namespace FIAP.CloudGames.Payments.Tests.Services
 
             var bus = new Mock<IMessageBus>(MockBehavior.Loose);
 
-            Func<OrderStartedIntegrationEvent, Task<ResponseMessage>> responder = null!;
-            bus.Setup(b => b.RespondAsync<OrderStartedIntegrationEvent, ResponseMessage>(
-                    It.IsAny<Func<OrderStartedIntegrationEvent, Task<ResponseMessage>>>()))
-               .Callback<Func<OrderStartedIntegrationEvent, Task<ResponseMessage>>>(f => responder = f);
+            Func<OrderProcessingStartedIntegrationEvent, Task<ResponseMessage>> responder = null!;
+            bus.Setup(b => b.RespondAsync<OrderProcessingStartedIntegrationEvent, ResponseMessage>(
+                    It.IsAny<Func<OrderProcessingStartedIntegrationEvent, Task<ResponseMessage>>>()))
+               .Callback<Func<OrderProcessingStartedIntegrationEvent, Task<ResponseMessage>>>(f => responder = f);
 
             var sut = new PaymentIntegrationHandler(provider, bus.Object);
             await sut.StartAsync(CancellationToken.None);
 
-            var evt = new OrderStartedIntegrationEvent
+            var evt = new OrderProcessingStartedIntegrationEvent
             {
                 OrderId = Guid.NewGuid(),
                 CustomerId = Guid.NewGuid(),

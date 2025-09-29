@@ -70,7 +70,7 @@ namespace FIAP.CloudGames.Order.Tests.Application
             orderRepo.SetupGet(r => r.UnitOfWork).Returns(uow.Object);
 
             var bus = new Mock<IMessageBus>(MockBehavior.Strict);
-            bus.Setup(b => b.RequestAsync<OrderStartedIntegrationEvent, ResponseMessage>(It.IsAny<OrderStartedIntegrationEvent>()))
+            bus.Setup(b => b.RequestAsync<OrderProcessingStartedIntegrationEvent, ResponseMessage>(It.IsAny<OrderProcessingStartedIntegrationEvent>()))
                .ReturnsAsync(new ResponseMessage(new ValidationResult()));
 
             var sut = new OrderCommandHandler(voucherRepo.Object, orderRepo.Object, bus.Object);
@@ -94,7 +94,7 @@ namespace FIAP.CloudGames.Order.Tests.Application
 
             var bus = new Mock<IMessageBus>(MockBehavior.Strict);
             var vr = new ValidationResult(new[] { new ValidationFailure("payment", "refused") });
-            bus.Setup(b => b.RequestAsync<OrderStartedIntegrationEvent, ResponseMessage>(It.IsAny<OrderStartedIntegrationEvent>()))
+            bus.Setup(b => b.RequestAsync<OrderProcessingStartedIntegrationEvent, ResponseMessage>(It.IsAny<OrderProcessingStartedIntegrationEvent>()))
                .ReturnsAsync(new ResponseMessage(vr));
 
             var sut = new OrderCommandHandler(voucherRepo.Object, orderRepo.Object, bus.Object);
@@ -129,8 +129,8 @@ namespace FIAP.CloudGames.Order.Tests.Application
             orderRepo.SetupGet(r => r.UnitOfWork).Returns(uow.Object);
 
             var bus = new Mock<IMessageBus>(MockBehavior.Strict);
-            bus.Setup(b => b.RequestAsync<OrderStartedIntegrationEvent, ResponseMessage>(
-                        It.IsAny<OrderStartedIntegrationEvent>()))
+            bus.Setup(b => b.RequestAsync<OrderProcessingStartedIntegrationEvent, ResponseMessage>(
+                        It.IsAny<OrderProcessingStartedIntegrationEvent>()))
                .ReturnsAsync(new ResponseMessage(new FluentValidation.Results.ValidationResult()));
 
             var sut = new OrderCommandHandler(voucherRepo.Object, orderRepo.Object, bus.Object);

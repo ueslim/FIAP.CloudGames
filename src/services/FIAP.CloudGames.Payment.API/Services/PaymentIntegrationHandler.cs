@@ -18,13 +18,16 @@ namespace FIAP.CloudGames.Payment.API.Services
 
         private void SetResponder()
         {
-            _bus.RespondAsync<OrderStartedIntegrationEvent, ResponseMessage>(async request => await AuthorizePayment(request));
+            // Recebe da API Order que um pedido foi iniciado
+            _bus.RespondAsync<OrderProcessingStartedIntegrationEvent, ResponseMessage>(async request => await AuthorizePayment(request));
         }
 
         private void SetSubscribers()
         {
+            // Se a API Order cancelar
             _bus.SubscribeAsync<OrderCanceledIntegrationEvent>("OrderCanceled", async request => await CancelPayment(request));
 
+            // Se o Catalog disser que o produto tem estoque e foi decrementado, ou seja, posso Finalizar o Pagamento e dizer a API de Order que esta pago.
             _bus.SubscribeAsync<OrderStockDeductedIntegrationEvent>("OrderStockDeductedIntegrationEvent", async request => await CapturePayment(request));
         }
 
@@ -34,8 +37,9 @@ namespace FIAP.CloudGames.Payment.API.Services
             SetSubscribers();
             return Task.CompletedTask;
         }
-
-        private async Task<ResponseMessage> AuthorizePayment(OrderStartedIntegrationEvent message)
+        
+        // Verifica no provider se ta autorizado ou nao e responder a API Order
+        private async Task<ResponseMessage> AuthorizePayment(OrderProcessingStartedIntegrationEvent message)
         {
             using var scope = _serviceProvider.CreateScope();
             var paymentService = scope.ServiceProvider.GetRequiredService<IPaymentService>();
