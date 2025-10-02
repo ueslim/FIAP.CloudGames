@@ -1,0 +1,37 @@
+# .NET build outputs
+bin/
+obj/
+TestResults/
+out/
+publish/
+
+# IDE/editor
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs and coverage
+*.log
+coverage/
+*.coverage*
+
+# NuGet
+*.nupkg
+.nuget/packages/
+
+# Azure Functions local settings
+local.settings.json
+
+# Docker artifacts
+**/*.tgz
+**/*.tar
+
+# Node (if present)
+node_modules/
+
+# Azurite data (if mapped locally)
+azurite_data/

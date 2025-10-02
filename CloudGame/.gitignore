@@ -1,0 +1,27 @@
+# CloudGame (aggregator) solution ignores
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build outputs (if any generated here)
+bin/
+obj/
+TestResults/
+out/
+publish/
+
+# Logs
+*.log
+
+# Docker compose artifacts
+**/*.tgz
+**/*.tar
+
+# Local environment files
+.env
