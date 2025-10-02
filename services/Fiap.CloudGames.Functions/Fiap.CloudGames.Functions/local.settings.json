@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "PaymentsDb": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CloudGames.Payments;Integrated Security=True;Trust Server Certificate=True",
+    "Search__Endpoint": "https://<your-search>.search.windows.net",
+    "Search__ApiKey": "",
+    "Search__IndexName": "games"
+  }
+}

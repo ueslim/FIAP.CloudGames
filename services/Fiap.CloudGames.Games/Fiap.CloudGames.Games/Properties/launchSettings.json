@@ -1,0 +1,22 @@
+{
+  "profiles": {
+    "Fiap.CloudGames.Games": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5002",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Jwt__Secret": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "Jwt__Issuer": "Fiap.CloudGames.Users",
+        "Jwt__Audience": "Fiap.CloudGames.Clients",
+        "ConnectionStrings__GamesDb": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CloudGames.Games;Integrated Security=True;Trust Server Certificate=True",
+        "ConnectionStrings__Storage": "UseDevelopmentStorage=true",
+        "Queues__Games": "games-events",
+        "Search__Endpoint": "https://<your-search>.search.windows.net",
+        "Search__ApiKey": "",
+        "Search__IndexName": "games"
+      }
+    }
+  }
+}

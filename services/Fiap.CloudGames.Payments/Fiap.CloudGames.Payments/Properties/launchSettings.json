@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "Fiap.CloudGames.Payments": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5003",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Jwt__Secret": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "Jwt__Issuer": "Fiap.CloudGames.Users",
+        "Jwt__Audience": "Fiap.CloudGames.Clients",
+        "ConnectionStrings__PaymentsDb": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CloudGames.Payments;Integrated Security=True;Trust Server Certificate=True",
+        "ConnectionStrings__Storage": "UseDevelopmentStorage=true",
+        "Queues__Payments": "payments-events"
+      }
+    }
+  }
+}

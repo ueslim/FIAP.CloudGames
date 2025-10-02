@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Fiap.CloudGames.Functions": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Jwt__Secret": ""
+      }
+    }
+  }
+}

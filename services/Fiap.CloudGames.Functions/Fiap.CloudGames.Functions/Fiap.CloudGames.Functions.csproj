@@ -7,9 +7,10 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.21.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.16.4" OutputItemType="Analyzer" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues" Version="6.3.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.16.4" OutputItemType="Analyzer" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues" Version="5.5.3" />
     <PackageReference Include="Azure.Search.Documents" Version="11.5.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.8.1" />
     <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.1.0" />
   </ItemGroup>

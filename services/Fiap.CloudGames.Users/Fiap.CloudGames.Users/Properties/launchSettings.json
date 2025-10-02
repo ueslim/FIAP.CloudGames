@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "Fiap.CloudGames.Users": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Jwt__Secret": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "Jwt__Issuer": "Fiap.CloudGames.Users",
+        "Jwt__Audience": "Fiap.CloudGames.Clients",
+        "ConnectionStrings__UsersDb": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CloudGames.Users;Integrated Security=True;Trust Server Certificate=True",
+        "ConnectionStrings__Storage": "UseDevelopmentStorage=true",
+        "Queues__Users": "users-events"
+      }
+    }
+  }
+}

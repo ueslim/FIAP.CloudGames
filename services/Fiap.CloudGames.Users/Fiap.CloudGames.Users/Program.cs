@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using Azure.Storage.Queues;
 using System.Text.Json;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,21 +70,41 @@ builder.Services.AddAuthentication(options =>
 // Controllers and Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CloudGames Users API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
-// OpenTelemetry + Application Insights
+// OpenTelemetry (App Insights may still collect via ILogger)
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService("Fiap.CloudGames.Users"))
     .WithTracing(tracing => tracing
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        .AddEntityFrameworkCoreInstrumentation()
-        .AddAzureMonitorTraceExporter())
+        .AddEntityFrameworkCoreInstrumentation())
     .WithMetrics(metrics => metrics
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        .AddRuntimeInstrumentation()
-        .AddAzureMonitorMetricExporter());
+        .AddRuntimeInstrumentation());
 
 // DI for domain/app services
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -93,6 +114,9 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
+    db.Database.EnsureCreated();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
