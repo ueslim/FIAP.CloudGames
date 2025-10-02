@@ -11,9 +11,9 @@ using System.Text.Json;
 public class GamesController : ControllerBase
 {
     private readonly GamesDbContext _db;
-    private readonly SearchClient _search;
+    private readonly IGamesSearch _search;
     private readonly QueueClient _queue;
-    public GamesController(GamesDbContext db, SearchClient search, QueueClient queue)
+    public GamesController(GamesDbContext db, IGamesSearch search, QueueClient queue)
     {
         _db = db; _search = search; _queue = queue;
     }
@@ -39,12 +39,7 @@ public class GamesController : ControllerBase
     [HttpGet("search")]
     public async Task<IActionResult> Search([FromQuery] string q)
     {
-        var resp = await _search.SearchAsync<SearchDocument>(q ?? "*");
-        var results = new List<object>();
-        await foreach (var r in resp.Value.GetResultsAsync())
-        {
-            results.Add(r.Document);
-        }
+        var results = await _search.SearchAsync(q);
         return Ok(results);
     }
 

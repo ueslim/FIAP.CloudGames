@@ -85,20 +85,17 @@ builder.Services.AddOpenTelemetry()
     .WithTracing(t => t.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddEntityFrameworkCoreInstrumentation())
     .WithMetrics(m => m.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation());
 
-// Cognitive Search clients
-builder.Services.AddSingleton(sp =>
+// Search abstraction registration
+var endpointStr = config["Search:Endpoint"] ?? string.Empty;
+var apiKeyStr = config["Search:ApiKey"] ?? string.Empty;
+if (Uri.TryCreate(endpointStr, UriKind.Absolute, out var endpoint) && endpoint.Scheme == Uri.UriSchemeHttps && !string.IsNullOrWhiteSpace(apiKeyStr))
 {
-    var endpoint = new Uri(config["Search:Endpoint"] ?? "http://localhost");
-    var apiKey = new AzureKeyCredential(config["Search:ApiKey"] ?? "");
-    return new SearchClient(endpoint, config["Search:IndexName"] ?? "games", apiKey);
-});
-
-builder.Services.AddSingleton(sp =>
+    builder.Services.AddSingleton<IGamesSearch, AzureSearchGamesSearch>();
+}
+else
 {
-    var endpoint = new Uri(config["Search:Endpoint"] ?? "http://localhost");
-    var apiKey = new AzureKeyCredential(config["Search:ApiKey"] ?? "");
-    return new SearchIndexClient(endpoint, apiKey);
-});
+    builder.Services.AddScoped<IGamesSearch, NoopGamesSearch>();
+}
 
 var app = builder.Build();
 
