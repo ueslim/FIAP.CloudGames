@@ -2,21 +2,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.CloudGames.Users", "..\services\Fiap.CloudGames.Users\Fiap.CloudGames.Users\Fiap.CloudGames.Users.csproj", "{A1B1C2D3-E4F5-6789-ABCD-111111111111}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudGames.Users", "..\services\CloudGames.Users\CloudGames.Users\CloudGames.Users.csproj", "{A1B1C2D3-E4F5-6789-ABCD-111111111111}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.CloudGames.Games", "..\services\Fiap.CloudGames.Games\Fiap.CloudGames.Games\Fiap.CloudGames.Games.csproj", "{A1B1C2D3-E4F5-6789-ABCD-222222222222}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudGames.Games", "..\services\CloudGames.Games\CloudGames.Games\CloudGames.Games.csproj", "{A1B1C2D3-E4F5-6789-ABCD-222222222222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.CloudGames.Payments", "..\services\Fiap.CloudGames.Payments\Fiap.CloudGames.Payments\Fiap.CloudGames.Payments.csproj", "{A1B1C2D3-E4F5-6789-ABCD-333333333333}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudGames.Payments", "..\services\CloudGames.Payments\CloudGames.Payments\CloudGames.Payments.csproj", "{A1B1C2D3-E4F5-6789-ABCD-333333333333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.CloudGames.Functions", "..\services\Fiap.CloudGames.Functions\Fiap.CloudGames.Functions\Fiap.CloudGames.Functions.csproj", "{A1B1C2D3-E4F5-6789-ABCD-444444444444}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudGames.Functions", "..\services\CloudGames.Functions\CloudGames.Functions\CloudGames.Functions.csproj", "{A1B1C2D3-E4F5-6789-ABCD-444444444444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.CloudGames.Users.Tests", "..\services\Fiap.CloudGames.Users\tests\Fiap.CloudGames.Users.Tests\Fiap.CloudGames.Users.Tests.csproj", "{A1B1C2D3-E4F5-6789-ABCD-555555555555}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudGames.Users.Tests", "..\services\CloudGames.Users\tests\CloudGames.Users.Tests\CloudGames.Users.Tests.csproj", "{A1B1C2D3-E4F5-6789-ABCD-555555555555}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.CloudGames.Games.Tests", "..\services\Fiap.CloudGames.Games\tests\Fiap.CloudGames.Games.Tests\Fiap.CloudGames.Games.Tests.csproj", "{A1B1C2D3-E4F5-6789-ABCD-666666666666}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudGames.Games.Tests", "..\services\CloudGames.Games\tests\CloudGames.Games.Tests\CloudGames.Games.Tests.csproj", "{A1B1C2D3-E4F5-6789-ABCD-666666666666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.CloudGames.Payments.Tests", "..\services\Fiap.CloudGames.Payments\tests\Fiap.CloudGames.Payments.Tests\Fiap.CloudGames.Payments.Tests.csproj", "{A1B1C2D3-E4F5-6789-ABCD-777777777777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudGames.Payments.Tests", "..\services\CloudGames.Payments\tests\CloudGames.Payments.Tests\CloudGames.Payments.Tests.csproj", "{A1B1C2D3-E4F5-6789-ABCD-777777777777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.CloudGames.Functions.Tests", "..\services\Fiap.CloudGames.Functions\tests\Fiap.CloudGames.Functions.Tests\Fiap.CloudGames.Functions.Tests.csproj", "{A1B1C2D3-E4F5-6789-ABCD-888888888888}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudGames.Functions.Tests", "..\services\CloudGames.Functions\tests\CloudGames.Functions.Tests\CloudGames.Functions.Tests.csproj", "{A1B1C2D3-E4F5-6789-ABCD-888888888888}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
