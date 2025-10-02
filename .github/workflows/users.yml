@@ -1,0 +1,31 @@
+name: users-ci
+on:
+  push:
+    paths:
+      - 'services/Fiap.CloudGames.Users/**'
+  pull_request:
+    paths:
+      - 'services/Fiap.CloudGames.Users/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore services/Fiap.CloudGames.Users/Fiap.CloudGames.Users/Fiap.CloudGames.Users.csproj
+      - name: Build
+        run: dotnet build --configuration Release --no-restore services/Fiap.CloudGames.Users/Fiap.CloudGames.Users/Fiap.CloudGames.Users.csproj
+      - name: Publish
+        run: dotnet publish --configuration Release --no-build -o out services/Fiap.CloudGames.Users/Fiap.CloudGames.Users/Fiap.CloudGames.Users.csproj
+      - name: Build Docker image
+        run: docker build -t users:local -f services/Fiap.CloudGames.Users/Dockerfile services
+      # - name: Deploy to Azure Web App (example)
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: ${{ secrets.AZURE_USERS_APP_NAME }}
+      #     publish-profile: ${{ secrets.AZURE_USERS_PUBLISH_PROFILE }}
+      #     package: out

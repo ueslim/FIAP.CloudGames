@@ -1,0 +1,31 @@
+name: games-ci
+on:
+  push:
+    paths:
+      - 'services/Fiap.CloudGames.Games/**'
+  pull_request:
+    paths:
+      - 'services/Fiap.CloudGames.Games/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore services/Fiap.CloudGames.Games/Fiap.CloudGames.Games/Fiap.CloudGames.Games.csproj
+      - name: Build
+        run: dotnet build --configuration Release --no-restore services/Fiap.CloudGames.Games/Fiap.CloudGames.Games/Fiap.CloudGames.Games.csproj
+      - name: Publish
+        run: dotnet publish --configuration Release --no-build -o out services/Fiap.CloudGames.Games/Fiap.CloudGames.Games/Fiap.CloudGames.Games.csproj
+      - name: Build Docker image
+        run: docker build -t games:local -f services/Fiap.CloudGames.Games/Dockerfile services
+      # - name: Deploy to Azure Web App (example)
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: ${{ secrets.AZURE_GAMES_APP_NAME }}
+      #     publish-profile: ${{ secrets.AZURE_GAMES_PUBLISH_PROFILE }}
+      #     package: out

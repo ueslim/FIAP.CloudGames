@@ -1,0 +1,145 @@
+using Azure;
+using Azure.Search.Documents;
+using Azure.Search.Documents.Indexes;
+using Azure.Search.Documents.Models;
+using Azure.Storage.Queues;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using System.Security.Claims;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
+
+builder.Services.AddCors(o => o.AddPolicy("frontend", p => p
+    .WithOrigins("http://localhost:4200", "https://*.azurestaticapps.net")
+    .AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
+
+builder.Services.AddDbContext<GamesDbContext>(opt =>
+    opt.UseSqlServer(config.GetConnectionString("GamesDb")));
+
+// Queue publisher for game events
+builder.Services.AddSingleton(sp =>
+{
+    var cs = config.GetConnectionString("Storage") ?? "UseDevelopmentStorage=true";
+    return new QueueClient(cs, config["Queues:Games"] ?? "games-events");
+});
+
+var jwtKey = config["Jwt:Secret"] ?? "replace-me";
+var jwtIssuer = config["Jwt:Issuer"] ?? "Fiap.CloudGames.Users";
+var jwtAudience = config["Jwt:Audience"] ?? "Fiap.CloudGames.Clients";
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(o =>
+    {
+        o.RequireHttpsMetadata = false;
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = signingKey,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            ValidateLifetime = true,
+            RoleClaimType = ClaimTypes.Role,
+            NameClaimType = ClaimTypes.NameIdentifier,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r.AddService("Fiap.CloudGames.Games"))
+    .WithTracing(t => t.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddEntityFrameworkCoreInstrumentation().AddAzureMonitorTraceExporter())
+    .WithMetrics(m => m.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation().AddAzureMonitorMetricExporter());
+
+// Cognitive Search clients
+builder.Services.AddSingleton(sp =>
+{
+    var endpoint = new Uri(config["Search:Endpoint"] ?? "http://localhost");
+    var apiKey = new AzureKeyCredential(config["Search:ApiKey"] ?? "");
+    return new SearchClient(endpoint, config["Search:IndexName"] ?? "games", apiKey);
+});
+
+builder.Services.AddSingleton(sp =>
+{
+    var endpoint = new Uri(config["Search:Endpoint"] ?? "http://localhost");
+    var apiKey = new AzureKeyCredential(config["Search:ApiKey"] ?? "");
+    return new SearchIndexClient(endpoint, apiKey);
+});
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapGet("/health", () => Results.Ok("ok"));
+
+app.UseCors("frontend");
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
+public class GamesDbContext : DbContext
+{
+    public GamesDbContext(DbContextOptions<GamesDbContext> options) : base(options) { }
+    public DbSet<Game> Games => Set<Game>();
+    public DbSet<GameEvent> GameEvents => Set<GameEvent>();
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Game>(b =>
+        {
+            b.ToTable("Games");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Title).IsRequired().HasMaxLength(100);
+            b.Property(x => x.Description).IsRequired().HasMaxLength(2000);
+            b.Property(x => x.Price).HasColumnType("decimal(18,2)");
+            b.Property(x => x.TagsJson);
+        });
+        modelBuilder.Entity<GameEvent>(b =>
+        {
+            b.ToTable("GameEvents");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Type).IsRequired().HasMaxLength(50);
+            b.Property(x => x.Payload).IsRequired();
+            b.Property(x => x.CreatedAt).IsRequired();
+        });
+    }
+}
+
+public class Game
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string Developer { get; set; } = string.Empty;
+    public string Publisher { get; set; } = string.Empty;
+    public DateTime ReleaseDate { get; set; }
+    public string Genre { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+    public string CoverImageUrl { get; set; } = string.Empty;
+    public string TagsJson { get; set; } = "[]";
+}
+
+public class GameEvent
+{
+    public Guid Id { get; set; }
+    public string Type { get; set; } = string.Empty;
+    public string Payload { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
